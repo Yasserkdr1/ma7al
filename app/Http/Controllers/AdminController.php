@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
@@ -100,6 +101,90 @@ class AdminController extends Controller
         return redirect()->route('admin.categories')->with('status','Category has been added sucesfully');
 
     }
+
+    public function products(){
+
+        $products= Product::orderBy('created_at','DESC')->paginate(10);
+        return view('admin.products',compact('products'));
+    }
+
+
+    public function product_add()
+{
+    $categories = Category::Select('id','name')->orderBy('name')->get();
+    return view("admin.product-add",compact('categories'));
+}
+
+    public function product_store(Request $request){
+        $request->validate([
+            'name'=>'required',
+             'slug'=>'required',
+             'short_description'=>'required',
+             'sale_price'=>'required',
+             'stock_status'=>'required',
+             'image'=>'required|mimes:png,jpg,jpeg|max:2048',
+             'quantity'=>'required',
+             'featured'=>'required',
+             'category_id'=>'required',
+
+        ]);
+        $product =new Product();
+        $product->name=$request->name;
+        $product->slug=Str::slug($request->name);
+        $product->short_description=$request->short_description;
+        $product->sale_price=$request->sale_price;
+        $product->stock_status=$request->stock_status;
+        $product->quantity=$request->quantity;
+        $product->featured=$request->featured;
+        $product->category_id=$request->category_id;
+
+        $current_timestamp=Carbon::now()->timestamp;
+
+        if($request->hasFile('image')){
+            $image =$request->file('image');
+            $imageName=$current_timestamp.'.'.$image->extension();
+            $this->GenerateProductThumbnailImage($image,$imageName);
+            $product->image =$imageName;
+
+        }
+
+        $product->save();
+        return redirect()->route('admin.products')->with('status','Product has been aded succesfully');
+    }
+
+
+    public function GenerateProductThumbnailImage($image,$imageName){
+        $destinationPathThumbnail = public_path('uploads/products/thumbnails');
+        $destinationPath = public_path('uploads/products');
+        $img= Image::read($image->path());
+        $img->cover(540,689,"top");
+        $img->resize(540,689,function($constraint){
+            $constraint->aspectRatio();
+        })->save($destinationPath.'/'.$imageName);
+
+
+        $img->resize(104,104,function($constraint){
+            $constraint->aspectRatio();
+        })->save($destinationPathThumbnail.'/'.$imageName);
+
+
+
+    }
+
+    public function product_delete($id){
+        $product=Product::find($id);
+        if(FILE::exists(public_path('/uploads/products').'/'.$product->image)){
+            File::delete(public_path('uploads/product').'/'.$product->image);
+        }
+        if(FILE::exists(public_path('/uploads/products/thumbmails').'/'.$product->image)){
+            File::delete(public_path('uploads/product/thumbmails').'/'.$product->image);
+        }
+        $product->delete();
+        return redirect()->route('admin.products')->with('status','Product has been deleted successfully !');
+    }
+
+
+
 
 
 }

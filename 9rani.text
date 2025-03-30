@@ -1,0 +1,14 @@
+fach tfth doossier ya3ni itl3 lik ga3 les dossier fhl app routes... mhm
+1-sir l xampp sir mysql bdl lih lport l 3307
+2-sir phpmy admin crer db jdida smiha ma7al
+3-sir fth terminal fost vs code o executi hadchi:
+           composer update
+           composer install
+           npm install
+           npm run build
+           composer require doctrine/dbal
+           php artisan migrate
+           php artisan make:seeder AdminSeeder(creeti acc dyal admin les informationdyalo kaynin f databases/seeder/adminseeder)
+4-zyr rassk meana o khdm
+
+

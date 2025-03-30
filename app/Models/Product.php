@@ -4,12 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-
-class Category extends Model
+class Product extends Model
 {
-    use HasFactory;
-    public function products(){
-        return $this->hashMany(Product::class);
+    public function category(){
+        return $this->belongsTo(Category::class,'category_id');
     }
 
 }
