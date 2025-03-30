@@ -45,13 +45,14 @@
                 <div class="section-menu-left">
                     <div class="box-logo">
                         <a href="{{route('admin.indexx')}}" id="site-logo-inner">
-                            <img class="" id="logo_header" alt="" src="images/logo/logo.png"
-                                data-light="images/logo/logo.png" data-dark="images/logo/logo.png">
+                            {{-- <img class="" id="logo_header" alt="" src="{{ asset('assets/images/logo1.png')}}"> --}}
+                            {{-- <img src="{{ asset('assets/images/logo1.png')}}" style="height: 29px !imporant; width:100% !important" alt=""> --}}
                         </a>
                         <div class="button-show-hide">
                             <i class="icon-menu-left"></i>
                         </div>
                     </div>
+                    <br><br><br><br><br><br><br><br><br><br>
                     <div class="center">
                         <div class="center-item">
                             <div class="center-heading">Main Home</div>
@@ -84,24 +85,7 @@
                                         </li>
                                     </ul>
                                 </li>
-                                <li class="menu-item has-children">
-                                    <a href="javascript:void(0);" class="menu-item-button">
-                                        <div class="icon"><i class="icon-layers"></i></div>
-                                        <div class="text">Brand</div>
-                                    </a>
-                                    <ul class="sub-menu">
-                                        <li class="sub-menu-item">
-                                            <a href="add-brand.html" class="">
-                                                <div class="text">New Brand</div>
-                                            </a>
-                                        </li>
-                                        <li class="sub-menu-item">
-                                            <a href="brands.html" class="">
-                                                <div class="text">Brands</div>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
+
                                 <li class="menu-item has-children">
                                     <a href="javascript:void(0);" class="menu-item-button">
                                         <div class="icon"><i class="icon-layers"></i></div>
@@ -109,12 +93,12 @@
                                     </a>
                                     <ul class="sub-menu">
                                         <li class="sub-menu-item">
-                                            <a href="add-category.html" class="">
+                                            <a href="{{ route('admin.category.add')}}" class="">
                                                 <div class="text">New Category</div>
                                             </a>
                                         </li>
                                         <li class="sub-menu-item">
-                                            <a href="categories.html" class="">
+                                            <a href="{{ route('admin.categories')}}" class="">
                                                 <div class="text">Categories</div>
                                             </a>
                                         </li>
@@ -143,12 +127,6 @@
                                     <a href="slider.html" class="">
                                         <div class="icon"><i class="icon-image"></i></div>
                                         <div class="text">Slider</div>
-                                    </a>
-                                </li>
-                                <li class="menu-item">
-                                    <a href="coupons.html" class="">
-                                        <div class="icon"><i class="icon-grid"></i></div>
-                                        <div class="text">Coupns</div>
                                     </a>
                                 </li>
 
@@ -184,9 +162,9 @@
                         <div class="wrap">
                             <div class="header-left">
                                 <a href="index-2.html">
-                                    <img class="" id="logo_header_mobile" alt="" src="images/logo/logo.png"
-                                        data-light="images/logo/logo.png" data-dark="images/logo/logo.png"
-                                        data-width="154px" data-height="52px" data-retina="images/logo/logo.png">
+                                    <img class="" id="logo_header_mobile" alt="" src="{{ asset('assets/images/logo1.png')}}"
+                                        data-light="{{ asset('assets/images/logo1.png')}}" data-dark="{{ asset('assets/images/logo1.png')}}"
+                                        data-width="154px" data-height="52px" data-retina="{{ asset('assets/images/logo1.png')}}">
                                 </a>
                                 <div class="button-show-hide">
                                     <i class="icon-menu-left"></i>
@@ -282,8 +260,7 @@
                                                         </div>
                                                         <div class="flex items-center justify-between gap20 flex-grow">
                                                             <div class="name">
-                                                                <a href="product-list.html" class="body-text">Kristin
-                                                                    Watson</a>
+                                                                <a href="product-list.html" class="body-text">Admin</a>
                                                             </div>
                                                         </div>
                                                     </li>
@@ -403,7 +380,7 @@
                                                     <img src="images/avatar/user-1.png" alt="">
                                                 </span>
                                                 <span class="flex flex-column">
-                                                    <span class="body-title mb-2">Kristin Watson</span>
+                                                    <span class="body-title mb-2">Admin</span>
                                                     <span class="text-tiny">Admin</span>
                                                 </span>
                                             </span>
@@ -465,7 +442,7 @@
 
 
                         <div class="bottom-page">
-                            <div class="body-text">Copyright © 2024 SurfsideMedia</div>
+                            <div class="body-text">Copyright © 2025 WY-SPORT</div>
                         </div>
                     </div>
 
