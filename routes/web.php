@@ -19,9 +19,11 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/account-dashboard',[UserController::class, 'index'])->name('user.indexx');
 });
 Route::get('/cart',[CartControler::class,'index'])->name('cart.index');
+Route::post('/cart/add',[CartControler::class,'add_to_cart'])->name('cart.add');
 
 Route::get('/shop',[ShopController::class,'index'])->name('shop.indexx');
 Route::get('/shop/{product_slug}',[ShopController::class,'product_details'])->name('shop.products.details');
+
 
 
 
