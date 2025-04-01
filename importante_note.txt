@@ -1,0 +1,15 @@
+after opening the folder:
+1-go to "env" file change the name of db to "ma7al"
+2-be sure that the port in env filr is the same as in xampp for mysql
+3-set SESSION_DRIVER to file like this: SESSION_DRIVER=file and also make sure that the type of db is mysql
+4-go to phpmyadmin and create a db with name of "ma7al"
+5-in the terminal of vscode type those commandes:
+   composer update
+   composer install
+   npm install
+   npm run build
+   php artisan key:generate
+   php artisan migrate (go to php myadmin to check if tables are created)
+   php artisan make:seeder AdminSeeder (this will create a admin profile u can view the information related to such as email in database/seeder/adminseeder)
+   php artisan serve to run the server and get acces to the website
+   ....

@@ -24,6 +24,10 @@ Route::post('/cart/add',[CartControler::class,'add_to_cart'])->name('cart.add');
 Route::get('/shop',[ShopController::class,'index'])->name('shop.indexx');
 Route::get('/shop/{product_slug}',[ShopController::class,'product_details'])->name('shop.products.details');
 
+Route::put('/cart/increase-qunatity/{rowId}',[CartControler::class,'increase_card_quantity'])->name('cart.qty.increase');
+Route::put('/cart/decrease-qunatity/{rowId}',[CartControler::class,'decrease_card_quantity'])->name('cart.qty.decrease');
+Route::delete('/cart/remove/{rowId}',[CartControler::class,'remove_item'])->name('cart.item.remove');
+Route::delete('/cart/clear',[CartControler::class,'empty_cart'])->name('cart.empty');
 
 
 
