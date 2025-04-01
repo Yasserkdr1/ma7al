@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ShopController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CartControler;
 
 // Route::get('/', function () {
 //     return view('indexx');
@@ -16,6 +18,23 @@ Route::get('/', [HomeController::class,'index'])->name('home.indexx');
 Route::middleware(['auth'])->group(function(){
     Route::get('/account-dashboard',[UserController::class, 'index'])->name('user.indexx');
 });
+Route::get('/cart',[CartControler::class,'index'])->name('cart.index');
+
+Route::get('/shop',[ShopController::class,'index'])->name('shop.indexx');
+Route::get('/shop/{product_slug}',[ShopController::class,'product_details'])->name('shop.products.details');
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 Route::middleware(['auth','auth.admin'])->group(function(){

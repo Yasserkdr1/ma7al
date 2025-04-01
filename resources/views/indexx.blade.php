@@ -86,90 +86,105 @@
     </section>
     <div class="container mw-1620 bg-white border-radius-10">
       <div class="mb-3 mb-xl-5 pt-1 pb-4"></div>
-     <section class="category-carousel container">
-  <h2 class="section-title text-center mb-3 pb-xl-2 mb-xl-4">You Might Like</h2>
 
-  <div class="position-relative">
-    <div class="swiper-container js-swiper-slider" data-settings='{
-        "autoplay": {
-          "delay": 5000
-        },
-        "slidesPerView": 3,
-        "slidesPerGroup": 1,
-        "effect": "none",
-        "loop": true,
-        "navigation": {
-          "nextEl": ".products-carousel__next-1",
-          "prevEl": ".products-carousel__prev-1"
-        },
-        "breakpoints": {
-          "320": {
-            "slidesPerView": 2,
-            "slidesPerGroup": 2,
-            "spaceBetween": 15
-          },
-          "768": {
-            "slidesPerView": 3,
-            "slidesPerGroup": 3,
-            "spaceBetween": 30
-          },
-          "992": {
-            "slidesPerView": 3,
-            "slidesPerGroup": 1,
-            "spaceBetween": 45,
-            "pagination": false
-          },
-          "1200": {
-            "slidesPerView": 3,
-            "slidesPerGroup": 1,
-            "spaceBetween": 60,
-            "pagination": false
-          }
-        }
-      }'>
-      <style>
-        .borderr {
-          border-radius: 10%;
-        }
-        .swiper-slide img {
-          width: 100%;
-          height: 400px;
-          object-fit: cover;
-        }
-      </style>
+      <section class="category-carousel container">
+        <h2 class="section-title text-center mb-3 pb-xl-2 mb-xl-4">You Might Like</h2>
 
-      <div class="swiper-wrapper">
-        <div class="swiper-slide">
-          <img loading="lazy" class="mb-3 borderr" src="{{ asset('assets/images/cat1.jpg')}}" alt="" />
-          <div class="text-center">
-            <a href="#" class="menu-link fw-medium">Health<br/>& Wellness</a>
-          </div>
-        </div>
-        <div class="swiper-slide">
-          <img loading="lazy" class="mb-3 borderr" src="{{ asset('assets/images/cat2.jpg')}}" alt="" />
-          <div class="text-center">
-            <a href="#" class="menu-link fw-medium">Fitness<br/>Supplements</a>
-          </div>
-        </div>
-        <div class="swiper-slide">
-          <img loading="lazy" class="mb-3 borderr" src="{{ asset('assets/images/cat3-2.jpg')}}" alt="" />
-          <div class="text-center">
-            <a href="#" class="menu-link fw-medium">Equipment</a>
-          </div>
-        </div>
-      </div><!-- /.swiper-wrapper -->
-      <div class="products-carousel__prev products-carousel__prev-1 position-absolute top-50 d-flex align-items-center justify-content-center">
-        <svg width="25" height="25" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg">
-          <use href="#icon_prev_md" />
-        </svg>
-      </div><!-- /.products-carousel__prev -->
-      <div class="products-carousel__next products-carousel__next-1 position-absolute top-50 d-flex align-items-center justify-content-center">
-        <svg width="25" height="25" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg">
-          <use href="#icon_next_md" />
-        </svg>
-      </div><!-- /.products-carousel__next -->
-    </div><!-- /.position-relative -->
-  </section>
+        <div class="position-relative">
+          <div class="swiper-container js-swiper-slider" data-settings='{
+              "autoplay": {
+                "delay": 5000
+              },
+              "slidesPerView": 4,
+              "centeredSlides": true,
+              "centerInsufficientSlides": true,
+              "spaceBetween": 30,
+              "loop": true,
+              "navigation": {
+                "nextEl": ".products-carousel__next-1",
+                "prevEl": ".products-carousel__prev-1"
+              },
+              "breakpoints": {
+                "320": {
+                  "slidesPerView": 2,
+                  "centeredSlides": true,
+                  "centerInsufficientSlides": true,
+                  "slidesPerGroup": 2,
+                  "spaceBetween": 15
+                },
+                "768": {
+                  "slidesPerView": 3,
+                  "centeredSlides": true,
+                  "centerInsufficientSlides": true,
+                  "slidesPerGroup": 3,
+                  "spaceBetween": 30
+                },
+                "992": {
+                  "slidesPerView": 4,
+                  "centeredSlides": true,
+                  "centerInsufficientSlides": true,
+                  "slidesPerGroup": 1,
+                  "spaceBetween": 45,
+                  "pagination": false
+                },
+                "1200": {
+                  "slidesPerView": 4,
+                  "centeredSlides": true,
+                  "centerInsufficientSlides": true,
+                  "slidesPerGroup": 1,
+                  "spaceBetween": 60,
+                  "pagination": false
+                }
+              }
+            }'>
+
+            <style>
+              .borderr {
+                border-radius: 10%;
+              }
+              /* On définit une largeur minimale pour chaque slide */
+              .swiper-slide {
+                min-width: 250px;
+              }
+              .swiper-slide img {
+                width: 100%;
+                height: 200px; /* Hauteur ajustée */
+                object-fit: cover;
+              }
+              /* Optionnel : marges pour le texte */
+              .swiper-slide .menu-link {
+                display: block;
+                text-align: center;
+                margin-top: 10px;
+              }
+            </style>
+
+            <div class="swiper-wrapper">
+              @foreach($categories as $categorie)
+                <div class="swiper-slide">
+                  <img loading="lazy" class="mb-3 borderr" src="{{ asset('uploads/categories/' . $categorie->image) }}" alt="{{ $categorie->name }}" />
+                  <div class="text-center">
+                    <a href="#" class="menu-link fw-medium">{{ $categorie->name }}</a>
+                  </div>
+                </div>
+              @endforeach
+            </div><!-- /.swiper-wrapper -->
+
+            <div class="products-carousel__prev products-carousel__prev-1 position-absolute top-50 d-flex align-items-center justify-content-center">
+              <svg width="25" height="25" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg">
+                <use href="#icon_prev_md" />
+              </svg>
+            </div><!-- /.products-carousel__prev -->
+
+            <div class="products-carousel__next products-carousel__next-1 position-absolute top-50 d-flex align-items-center justify-content-center">
+              <svg width="25" height="25" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg">
+                <use href="#icon_next_md" />
+              </svg>
+            </div><!-- /.products-carousel__next -->
+          </div><!-- /.swiper-container -->
+        </div><!-- /.position-relative -->
+      </section>
+
 
 
       <div class="mb-3 mb-xl-5 pt-1 pb-4"></div>
@@ -177,8 +192,7 @@
       <section class="hot-deals container">
         <h2 class="section-title text-center mb-3 pb-xl-3 mb-xl-4">Hot Deals</h2>
         <div class="row">
-          <div
-            class="col-md-6 col-lg-4 col-xl-20per d-flex align-items-center flex-column justify-content-center py-4 align-items-md-start">
+          <div class="col-md-6 col-lg-4 col-xl-20per d-flex align-items-center flex-column justify-content-center py-4 align-items-md-start">
             <h2>Summer Sale</h2>
             <h2 class="fw-bold">Up to 60% Off</h2>
 
@@ -210,241 +224,73 @@
           <div class="col-md-6 col-lg-8 col-xl-80per">
             <div class="position-relative">
               <div class="swiper-container js-swiper-slider" data-settings='{
-                  "autoplay": {
-                    "delay": 5000
-                  },
-                  "slidesPerView": 4,
-                  "slidesPerGroup": 4,
-                  "effect": "none",
-                  "loop": false,
-                  "breakpoints": {
-                    "320": {
-                      "slidesPerView": 2,
-                      "slidesPerGroup": 2,
-                      "spaceBetween": 14
-                    },
-                    "768": {
-                      "slidesPerView": 2,
-                      "slidesPerGroup": 3,
-                      "spaceBetween": 24
-                    },
-                    "992": {
-                      "slidesPerView": 3,
-                      "slidesPerGroup": 1,
-                      "spaceBetween": 30,
-                      "pagination": false
-                    },
-                    "1200": {
-                      "slidesPerView": 4,
-                      "slidesPerGroup": 1,
-                      "spaceBetween": 30,
-                      "pagination": false
-                    }
-                  }
-                }'>
+                  "autoplay": { "delay": 5000, "disableOnInteraction": false },
+    "slidesPerView": 4,
+    "slidesPerGroup": 4,
+    "effect": "none",
+    "loop": true,
+    "breakpoints": {
+      "320": { "slidesPerView": 2, "slidesPerGroup": 2, "spaceBetween": 14 },
+      "768": { "slidesPerView": 2, "slidesPerGroup": 3, "spaceBetween": 24 },
+      "992": { "slidesPerView": 3, "slidesPerGroup": 1, "spaceBetween": 30, "pagination": false },
+      "1200": { "slidesPerView": 4, "slidesPerGroup": 1, "spaceBetween": 30, "pagination": false }
+    }
+  }'>
                 <style>
-                 .pc__img {
-  width: 300px !important;
-  height: 300px !important;
-  object-fit: cover;
-}
-/* Recadre l'image pour qu'elle remplisse le conteneur */
+                  .pc__img {
+                    width: 300px !important;
+                    height: 300px !important;
+                    object-fit: cover;
 
+                  }
+                  /* Recadre l'image pour qu'elle remplisse le conteneur */
+                  .box {
+                  }
                 </style>
                 <div class="swiper-wrapper">
-
-                  <div class="swiper-slide product-card product-card_style3">
-                    <div class="pc__img-wrapper">
-                      <a href="details.html">
-                        <img loading="lazy" src="{{ asset('assets/images/p1.jpg')}}" width="150" height="150"
-                          alt="Cropped Faux leather Jacket" class="pc__img">
-                        <img loading="lazy" src="{{ asset('assets/images/p1.jpg')}}" width="150" height="150"
-                          alt="Cropped Faux leather Jacket" class="pc__img pc__img-second">
-                      </a>
-                    </div>
-
-                    <div class="pc__info position-relative">
-                      <h6 class="pc__title"><a href="details.html">Product1</a></h6>
-                      <div class="product-card__price d-flex">
-                        <span class="money price text-secondary">$29</span>
+                  @foreach($products as $product)
+                    <div class="swiper-slide product-card product-card_style3 box">
+                      <div class="pc__img-wrapper ">
+                        <a href="#">
+                          <img loading="lazy" src="{{ asset('uploads/products/' . $product->image) }}" width="150" height="150" alt="{{ $product->name }}" class="pc__img">
+                          <!-- Vous pouvez afficher une seconde image si disponible ou réutiliser la même -->
+                          <img loading="lazy" src="{{ asset('uploads/products/' . $product->image) }}" width="150" height="150" alt="{{ $product->name }}" class="pc__img pc__img-second">
+                        </a>
                       </div>
+                      <div class="pc__info position-relative">
+                        <h6 class="pc__title">
+                          <a href="#">{{ $product->name }}</a>
+                        </h6>
+                        <div class="product-card__price d-flex">
+                          <span class="money price text-secondary">{{ $product->sale_price }}€</span>
+                        </div>
 
-                      <div
-                        class="anim_appear-bottom position-absolute bottom-0 start-0 d-none d-sm-flex align-items-center bg-body">
-                        <button class="btn-link btn-link_lg me-4 text-uppercase fw-medium js-add-cart js-open-aside"
-                          data-aside="cartDrawer" title="Add To Cart">Add To Cart</button>
-                        <button class="btn-link btn-link_lg me-4 text-uppercase fw-medium js-quick-view"
-                          data-bs-toggle="modal" data-bs-target="#quickView" title="Quick view">
-                          <span class="d-none d-xxl-block">Quick View</span>
-                          <span class="d-block d-xxl-none"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"
-                              xmlns="http://www.w3.org/2000/svg">
-                              <use href="#icon_view" />
-                            </svg></span>
-                        </button>
-                        <button class="pc__btn-wl bg-transparent border-0 js-add-wishlist" title="Add To Wishlist">
-                          <svg width="16" height="16" viewBox="0 0 20 20" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <use href="#icon_heart" />
-                          </svg>
-                        </button>
+                        <div class="anim_appear-bottom position-absolute bottom-0 start-0 d-none d-sm-flex align-items-center bg-body">
+                          <button class="btn-link btn-link_lg me-4 text-uppercase fw-medium js-add-cart js-open-aside" data-aside="cartDrawer" title="Add To Cart">Add To Cart</button>
+                          <button class="btn-link btn-link_lg me-4 text-uppercase fw-medium js-quick-view" data-bs-toggle="modal" data-bs-target="#quickView" title="Quick view">
+                            <span class="d-none d-xxl-block">Quick View</span>
+                            <span class="d-block d-xxl-none">
+                              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <use href="#icon_view" />
+                              </svg>
+                            </span>
+                          </button>
+                          <button class="pc__btn-wl bg-transparent border-0 js-add-wishlist" title="Add To Wishlist">
+                            <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <use href="#icon_heart" />
+                            </svg>
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div class="swiper-slide product-card product-card_style3">
-                    <div class="pc__img-wrapper">
-                      <a href="details.html">
-                        <img loading="lazy" src="{{ asset('assets/images/p2.jpg')}}" width="258" height="313"
-                          alt="Cropped Faux leather Jacket" class="pc__img">
-                        <img loading="lazy" src="{{ asset('assets/images/p2.jpg')}}" width="258" height="313"
-                          alt="Cropped Faux leather Jacket" class="pc__img pc__img-second">
-                      </a>
-                    </div>
-
-                    <div class="pc__info position-relative">
-                      <h6 class="pc__title"><a href="details.html">product2</a></h6>
-                      <div class="product-card__price d-flex">
-                        <span class="money price text-secondary">$62</span>
-                      </div>
-
-                      <div
-                        class="anim_appear-bottom position-absolute bottom-0 start-0 d-none d-sm-flex align-items-center bg-body">
-                        <button class="btn-link btn-link_lg me-4 text-uppercase fw-medium js-add-cart js-open-aside"
-                          data-aside="cartDrawer" title="Add To Cart">Add To Cart</button>
-                        <button class="btn-link btn-link_lg me-4 text-uppercase fw-medium js-quick-view"
-                          data-bs-toggle="modal" data-bs-target="#quickView" title="Quick view">
-                          <span class="d-none d-xxl-block">Quick View</span>
-                          <span class="d-block d-xxl-none"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"
-                              xmlns="http://www.w3.org/2000/svg">
-                              <use href="#icon_view" />
-                            </svg></span>
-                        </button>
-                        <button class="pc__btn-wl bg-transparent border-0 js-add-wishlist" title="Add To Wishlist">
-                          <svg width="16" height="16" viewBox="0 0 20 20" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <use href="#icon_heart" />
-                          </svg>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="swiper-slide product-card product-card_style3">
-                    <div class="pc__img-wrapper">
-                      <a href="details.html">
-                        <img loading="lazy" src="{{ asset('assets/images/p3.jpg')}}" width="258" height="313"
-                          alt="Cropped Faux leather Jacket" class="pc__img">
-                        <img loading="lazy" src="{{ asset('assets/images/p3.jpg')}}" width="258" height="313"
-                          alt="Cropped Faux leather Jacket" class="pc__img pc__img-second">
-                      </a>
-                    </div>
-
-                    <div class="pc__info position-relative">
-                      <h6 class="pc__title"><a href="details.html">product 3</a></h6>
-                      <div class="product-card__price d-flex">
-                        <span class="money price text-secondary">$62</span>
-                      </div>
-
-                      <div
-                        class="anim_appear-bottom position-absolute bottom-0 start-0 d-none d-sm-flex align-items-center bg-body">
-                        <button class="btn-link btn-link_lg me-4 text-uppercase fw-medium js-add-cart js-open-aside"
-                          data-aside="cartDrawer" title="Add To Cart">Add To Cart</button>
-                        <button class="btn-link btn-link_lg me-4 text-uppercase fw-medium js-quick-view"
-                          data-bs-toggle="modal" data-bs-target="#quickView" title="Quick view">
-                          <span class="d-none d-xxl-block">Quick View</span>
-                          <span class="d-block d-xxl-none"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"
-                              xmlns="http://www.w3.org/2000/svg">
-                              <use href="#icon_view" />
-                            </svg></span>
-                        </button>
-                        <button class="pc__btn-wl bg-transparent border-0 js-add-wishlist" title="Add To Wishlist">
-                          <svg width="16" height="16" viewBox="0 0 20 20" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <use href="#icon_heart" />
-                          </svg>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="swiper-slide product-card product-card_style3">
-                    <div class="pc__img-wrapper">
-                      <a href="details.html">
-                        <img loading="lazy" src="{{ asset('assets/images/p4.jpg')}}" width="258" height="313"
-                          alt="Cropped Faux leather Jacket" class="pc__img">
-                        <img loading="lazy" src="{{ asset('assets/images/p4.jpg')}}" width="258" height="313"
-                          alt="Cropped Faux leather Jacket" class="pc__img pc__img-second">
-                      </a>
-                    </div>
-
-                    <div class="pc__info position-relative">
-                      <h6 class="pc__title"><a href="details.html">product 4</a></h6>
-                      <div class="product-card__price d-flex align-items-center">
-                        <span class="money price-old">$129</span>
-                        <span class="money price text-secondary">$99</span>
-                      </div>
-
-                      <div
-                        class="anim_appear-bottom position-absolute bottom-0 start-0 d-none d-sm-flex align-items-center bg-body">
-                        <button class="btn-link btn-link_lg me-4 text-uppercase fw-medium js-add-cart js-open-aside"
-                          data-aside="cartDrawer" title="Add To Cart">Add To Cart</button>
-                        <button class="btn-link btn-link_lg me-4 text-uppercase fw-medium js-quick-view"
-                          data-bs-toggle="modal" data-bs-target="#quickView" title="Quick view">
-                          <span class="d-none d-xxl-block">Quick View</span>
-                          <span class="d-block d-xxl-none"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"
-                              xmlns="http://www.w3.org/2000/svg">
-                              <use href="#icon_view" />
-                            </svg></span>
-                        </button>
-                        <button class="pc__btn-wl bg-transparent border-0 js-add-wishlist" title="Add To Wishlist">
-                          <svg width="16" height="16" viewBox="0 0 20 20" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <use href="#icon_heart" />
-                          </svg>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="swiper-slide product-card product-card_style3">
-                    <div class="pc__img-wrapper">
-                      <a href="details.html">
-                        <img loading="lazy" src="{{ asset('assets/images/p4.jpg')}}" width="258" height="313"
-                          alt="Cropped Faux leather Jacket" class="pc__img">
-                        <img loading="lazy" src="{{ asset('assets/images/p4.jpg')}}" width="258" height="313"
-                          alt="Cropped Faux leather Jacket" class="pc__img pc__img-second">
-                      </a>
-                    </div>
-
-                    <div class="pc__info position-relative">
-                      <h6 class="pc__title"><a href="details.html">p4</a></h6>
-                      <div class="product-card__price d-flex">
-                        <span class="money price text-secondary">$29</span>
-                      </div>
-
-                      <div
-                        class="anim_appear-bottom position-absolute bottom-0 start-0 d-none d-sm-flex align-items-center bg-body">
-                        <button class="btn-link btn-link_lg me-4 text-uppercase fw-medium js-add-cart js-open-aside"
-                          data-aside="cartDrawer" title="Add To Cart">Add To Cart</button>
-                        <button class="btn-link btn-link_lg me-4 text-uppercase fw-medium js-quick-view"
-                          data-bs-toggle="modal" data-bs-target="#quickView" title="Quick view">
-                          <span class="d-none d-xxl-block">Quick View</span>
-                          <span class="d-block d-xxl-none"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"
-                              xmlns="http://www.w3.org/2000/svg">
-                              <use href="#icon_view" />
-                            </svg></span>
-                        </button>
-                        <button class="pc__btn-wl bg-transparent border-0 js-add-wishlist" title="Add To Wishlist">
-                          <svg width="16" height="16" viewBox="0 0 20 20" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <use href="#icon_heart" />
-                          </svg>
-                        </button>
-                      </div>
-                    </div>
-
+                  @endforeach
                 </div><!-- /.swiper-wrapper -->
               </div><!-- /.swiper-container js-swiper-slider -->
             </div><!-- /.position-relative -->
           </div>
         </div>
       </section>
+
       <style>
         .dt {
             width: 100% !important;
@@ -456,6 +302,7 @@
       </style>
 
       <div class="mb-3 mb-xl-5 pt-1 pb-4"></div>
+
 
       <section class="category-banner container">
         <div class="row">
@@ -494,189 +341,47 @@
         <h2 class="section-title text-center mb-3 pb-xl-3 mb-xl-4">Featured Products</h2>
 
         <div class="row">
-          <div class="col-6 col-md-4 col-lg-3">
-            <div class="product-card product-card_style3 mb-3 mb-md-4 mb-xxl-5">
-              <div class="pc__img-wrapper">
-                <a href="details.html">
-                  <img loading="lazy" src="{{ asset('assets/images/p5.jpg')}}" width="330" height="400"
-                    alt="" class="pc__img">
-                </a>
-              </div>
+            @foreach ($featureds as $f )
 
-              <div class="pc__info position-relative">
-                <h6 class="pc__title"><a href="details.html">p5</a></h6>
-                <div class="product-card__price d-flex align-items-center">
-                  <span class="money price text-secondary">$29</span>
-                </div>
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="product-card product-card_style3 mb-3 mb-md-4 mb-xxl-5">
+                  <div class="pc__img-wrapper">
+                    <a href="details.html">
+                      <img loading="lazy" src="{{ asset('uploads/products/'.$f->image)}}" width="330" height="400"
+                        alt="" class="pc__img">
+                    </a>
+                  </div>
 
-                <div
-                  class="anim_appear-bottom position-absolute bottom-0 start-0 d-none d-sm-flex align-items-center bg-body">
-                  <button class="btn-link btn-link_lg me-4 text-uppercase fw-medium js-add-cart js-open-aside"
-                    data-aside="cartDrawer" title="Add To Cart">Add To Cart</button>
-                  <button class="btn-link btn-link_lg me-4 text-uppercase fw-medium js-quick-view"
-                    data-bs-toggle="modal" data-bs-target="#quickView" title="Quick view">
-                    <span class="d-none d-xxl-block">Quick View</span>
-                    <span class="d-block d-xxl-none"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <use href="#icon_view" />
-                      </svg></span>
-                  </button>
-                  <button class="pc__btn-wl bg-transparent border-0 js-add-wishlist" title="Add To Wishlist">
-                    <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <use href="#icon_heart" />
-                    </svg>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-6 col-md-4 col-lg-3">
-            <div class="product-card product-card_style3 mb-3 mb-md-4 mb-xxl-5">
-              <div class="pc__img-wrapper">
-                <a href="details.html">
-                  <img loading="lazy" src="{{ asset('assets/images/p6.jpg')}}" width="330" height="400"
-                    alt="" class="pc__img">
-                </a>
-              </div>
+                  <div class="pc__info position-relative">
+                    <h6 class="pc__title"><a href="details.html">{{$f->name}}</a></h6>
+                    <div class="product-card__price d-flex align-items-center">
+                      <span class="money price text-secondary">{{$f->sale_price}}</span>
+                    </div>
 
-              <div class="pc__info position-relative">
-                <h6 class="pc__title"><a href="details.html">p6</a></h6>
-                <div class="product-card__price d-flex align-items-center">
-                  <span class="money price text-secondary">$62</span>
-                </div>
-
-                <div
-                  class="anim_appear-bottom position-absolute bottom-0 start-0 d-none d-sm-flex align-items-center bg-body">
-                  <button class="btn-link btn-link_lg me-4 text-uppercase fw-medium js-add-cart js-open-aside"
-                    data-aside="cartDrawer" title="Add To Cart">Add To Cart</button>
-                  <button class="btn-link btn-link_lg me-4 text-uppercase fw-medium js-quick-view"
-                    data-bs-toggle="modal" data-bs-target="#quickView" title="Quick view">
-                    <span class="d-none d-xxl-block">Quick View</span>
-                    <span class="d-block d-xxl-none"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <use href="#icon_view" />
-                      </svg></span>
-                  </button>
-                  <button class="pc__btn-wl bg-transparent border-0 js-add-wishlist" title="Add To Wishlist">
-                    <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <use href="#icon_heart" />
-                    </svg>
-                  </button>
+                    <div
+                      class="anim_appear-bottom position-absolute bottom-0 start-0 d-none d-sm-flex align-items-center bg-body">
+                      <button class="btn-link btn-link_lg me-4 text-uppercase fw-medium js-add-cart js-open-aside"
+                        data-aside="cartDrawer" title="Add To Cart">Add To Cart</button>
+                      <button class="btn-link btn-link_lg me-4 text-uppercase fw-medium js-quick-view"
+                        data-bs-toggle="modal" data-bs-target="#quickView" title="Quick view">
+                        <span class="d-none d-xxl-block">Quick View</span>
+                        <span class="d-block d-xxl-none"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <use href="#icon_view" />
+                          </svg></span>
+                      </button>
+                      <button class="pc__btn-wl bg-transparent border-0 js-add-wishlist" title="Add To Wishlist">
+                        <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <use href="#icon_heart" />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
-          <div class="col-6 col-md-4 col-lg-3">
-            <div class="product-card product-card_style3 mb-3 mb-md-4 mb-xxl-5">
-              <div class="pc__img-wrapper">
-                <a href="details.html">
-                  <img loading="lazy" src="{{ asset('assets/images/p5.jpg')}}" width="330" height="400"
-                    alt="" class="pc__img">
-                </a>
-                <div class="product-label text-uppercase bg-white top-0 left-0 mt-2 mx-2">New</div>
-              </div>
 
-              <div class="pc__info position-relative">
-                <h6 class="pc__title"><a href="details.html">p7</a></h6>
-                <div class="product-card__price d-flex align-items-center">
-                  <span class="money price text-secondary">$17</span>
-                </div>
+            @endforeach
 
-                <div
-                  class="anim_appear-bottom position-absolute bottom-0 start-0 d-none d-sm-flex align-items-center bg-body">
-                  <button class="btn-link btn-link_lg me-4 text-uppercase fw-medium js-add-cart js-open-aside"
-                    data-aside="cartDrawer" title="Add To Cart">Add To Cart</button>
-                  <button class="btn-link btn-link_lg me-4 text-uppercase fw-medium js-quick-view"
-                    data-bs-toggle="modal" data-bs-target="#quickView" title="Quick view">
-                    <span class="d-none d-xxl-block">Quick View</span>
-                    <span class="d-block d-xxl-none"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <use href="#icon_view" />
-                      </svg></span>
-                  </button>
-                  <button class="pc__btn-wl bg-transparent border-0 js-add-wishlist" title="Add To Wishlist">
-                    <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <use href="#icon_heart" />
-                    </svg>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-6 col-md-4 col-lg-3">
-            <div class="product-card product-card_style3 mb-3 mb-md-4 mb-xxl-5">
-              <div class="pc__img-wrapper">
-                <a href="details.html">
-                  <img loading="lazy" src="{{ asset('assets/images/p6.jpg')}}" width="330" height="400"
-                    alt="" class="pc__img">
-                </a>
-                <div class="product-label bg-red text-white right-0 top-0 left-auto mt-2 mx-2">-67%</div>
-              </div>
-
-              <div class="pc__info position-relative">
-                <h6 class="pc__title">p8</h6>
-                <div class="product-card__price d-flex align-items-center">
-                  <span class="money price-old">$129</span>
-                  <span class="money price text-secondary">$99</span>
-                </div>
-
-                <div
-                  class="anim_appear-bottom position-absolute bottom-0 start-0 d-none d-sm-flex align-items-center bg-body">
-                  <button class="btn-link btn-link_lg me-4 text-uppercase fw-medium js-add-cart js-open-aside"
-                    data-aside="cartDrawer" title="Add To Cart">Add To Cart</button>
-                  <button class="btn-link btn-link_lg me-4 text-uppercase fw-medium js-quick-view"
-                    data-bs-toggle="modal" data-bs-target="#quickView" title="Quick view">
-                    <span class="d-none d-xxl-block">Quick View</span>
-                    <span class="d-block d-xxl-none"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <use href="#icon_view" />
-                      </svg></span>
-                  </button>
-                  <button class="pc__btn-wl bg-transparent border-0 js-add-wishlist" title="Add To Wishlist">
-                    <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <use href="#icon_heart" />
-                    </svg>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-6 col-md-4 col-lg-3">
-            <div class="product-card product-card_style3 mb-3 mb-md-4 mb-xxl-5">
-              <div class="pc__img-wrapper">
-                <a href="details.html">
-                  <img loading="lazy" src="{{ asset('assets/images/p6.jpg')}}" width="330" height="400"
-                    alt="" class="pc__img">
-                </a>
-              </div>
-
-              <div class="pc__info position-relative">
-                <h6 class="pc__title"><a href="details.html">p9</a></h6>
-                <div class="product-card__price d-flex align-items-center">
-                  <span class="money price text-secondary">$29</span>
-                </div>
-
-                <div
-                  class="anim_appear-bottom position-absolute bottom-0 start-0 d-none d-sm-flex align-items-center bg-body">
-                  <button class="btn-link btn-link_lg me-4 text-uppercase fw-medium js-add-cart js-open-aside"
-                    data-aside="cartDrawer" title="Add To Cart">Add To Cart</button>
-                  <button class="btn-link btn-link_lg me-4 text-uppercase fw-medium js-quick-view"
-                    data-bs-toggle="modal" data-bs-target="#quickView" title="Quick view">
-                    <span class="d-none d-xxl-block">Quick View</span>
-                    <span class="d-block d-xxl-none"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <use href="#icon_view" />
-                      </svg></span>
-                  </button>
-                  <button class="pc__btn-wl bg-transparent border-0 js-add-wishlist" title="Add To Wishlist">
-                    <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <use href="#icon_heart" />
-                    </svg>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
 
         </div><!-- /.row -->
 
