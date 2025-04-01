@@ -12,8 +12,7 @@ class CartControler extends Controller
         return view('cart',compact('items'));
     }
     public function add_to_cart(Request $request){
-        $price = (float) $request->price;
-Cart::instance('cart')->add($request->id, $request->name, $request->quantity, $price)
+Cart::instance('cart')->add($request->id, $request->name, $request->quantity, $request->price)
     ->associate('App\Models\Product');
         return redirect()->back();
 
