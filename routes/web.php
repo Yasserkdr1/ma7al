@@ -32,7 +32,7 @@ Route::delete('/cart/clear',[CartControler::class,'empty_cart'])->name('cart.emp
 
 
 
-
+Route::get('/checkout',[CartControler::class,'checkout'])->name('cart.checkout');
 
 
 

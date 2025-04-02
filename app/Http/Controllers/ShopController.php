@@ -14,6 +14,8 @@ class ShopController extends Controller
         $o_order="";
         $order = $request->query('order')?$request->query('order'):-1;
         $f_categories=$request->query('categories');
+        $min_price=$request->query('min')?$request->query('min'):1;
+        $max_price=$request->query('max')?$request->query('max'):500;
 
         switch($order){
             case 1:
@@ -42,15 +44,21 @@ class ShopController extends Controller
         // $products=Product::orderBy($o_column,$o_order)->paginate($size);
         $categories=Category::orderBY('name','ASC')->get();
 
-        
+
         $products=Product::where(function($query) use($f_categories){
             $query->whereIn('category_id',explode(',',$f_categories))->orWhereRaw("'".$f_categories."'=''");
-        })->orderBy($o_column,$o_order)->paginate($size);
+        })
+        ->where(function($query) use($min_price,$max_price){
+            $query->whereBetween('sale_price',[$min_price,$max_price])
+            ->orWhereBetween('sale_price',[$min_price,$max_price]);
+        })
+        ->orderBy($o_column,$o_order)
+        ->paginate($size);
 
 
 
 
-        return view('shop',compact('products','size','order','categories','f_categories'));
+        return view('shop',compact('products','size','order','categories','f_categories','min_price','max_price'));
 
     }
 
