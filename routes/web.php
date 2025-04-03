@@ -33,6 +33,8 @@ Route::delete('/cart/clear',[CartControler::class,'empty_cart'])->name('cart.emp
 
 
 Route::get('/checkout',[CartControler::class,'checkout'])->name('cart.checkout');
+Route::post('/place-order',[CartControler::class,'place_order'])->name('cart.place.order'); 
+Route::get('/order-confirmation',[CartControler::class,'order_confirmation'])->name('cart.order.confirmation');
 
 
 
