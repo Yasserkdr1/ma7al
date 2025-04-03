@@ -14,7 +14,19 @@ return new class extends Migration
     Schema::create('adresses', function (Blueprint $table) {
         $table->id();
         $table->unsignedBigInteger('user_id');
-        $table->boolean('isdefault')->default(0);
+        $table->string('name');
+        $table->string('phone');
+        $table->string('locality');
+        $table->string('address');
+        $table->string('city');
+        $table->string('state');
+        $table->string('country');
+        $table->string('landmark')->nullable(); 
+        $table->string('zip');
+        $table->string('type')->default('home');
+        $table->boolean('isdefault')->default(false);
+        //foreign key
+        $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         $table->timestamps();
     });
 }
