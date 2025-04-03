@@ -275,7 +275,7 @@
 
       <div class="logo">
         <a href="{{ route('home.indexx')}}">
-          <img src="{{ asset('assets/images/logo1.png')}}" alt="Uomo" class="logo__image d-block" />
+          <img src="{{ asset('assets/images/logo1.png')}}" alt="WY-SPORTS" class="logo__image d-block" />
         </a>
       </div>
 
@@ -395,7 +395,7 @@
       <div class="header-desk header-desk_type_1">
         <div class="logo">
           <a href="{{ route('home.indexx')}}">
-            <img src="assets/images/logo1.png" alt="Uomo" class="logo__image d-block" />
+            <img src="{{asset('assets/images/logo1.png')}}" alt="WY-SPORT" class="logo__image d-block" />
           </a>
         </div>
 

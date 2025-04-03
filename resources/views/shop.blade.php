@@ -64,7 +64,8 @@
             <div id="accordion-filter-price" class="accordion-collapse collapse show border-0"
               aria-labelledby="accordion-heading-price" data-bs-parent="#price-filters">
               <input class="price-range-slider" type="text" name="price_range" value="" data-slider-min="1"
-                data-slider-max="1000" data-slider-step="5" data-slider-value="[{{$min_price}},{{$max_price}}]" data-currency="$" />
+
+                data-slider-max="500" data-slider-step="5" data-slider-value="[{{$min_price}},{{$max_price}}]" data-currency="$" />
               <div class="price-range__info d-flex align-items-center mt-2">
                 <div class="me-auto">
                   <span class="text-secondary">Min Price: </span>
@@ -72,7 +73,9 @@
                 </div>
                 <div>
                   <span class="text-secondary">Max Price: </span>
-                  <span class="price-range__max">$1000</span>
+
+                  <span class="price-range__max">$500</span>
+
                 </div>
               </div>
             </div>
@@ -167,7 +170,7 @@
               <input type="hidden" name="sale_price" value="{{$product->sale_price}}">
               <input type="hidden" name="image" value="{{$product->image}}">
               <input type="hidden" name="quantity" value="1">
-
+              
                        <button type="submit" class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium" data-aside="cartDrawer" title="Add To Cart">Add To Cart</button>
                       </form>
                     @endif
@@ -230,8 +233,11 @@
     <input type="hidden" name="size" value="{{$size}}">
     <input type="hidden" name="order" id="order" value="{{$order}}"/>
    <input type="hidden" name="categories" id="hdnCategories" value="{{$f_categories}}"/>
-   <input type="hidden" name="min" id="hdnMinPrice" value="{{$min_price}}"/>
-   <input type="hidden" name="max" id="hdnMaxPrice" value="{{$max_price}}"/>
+
+   <input type="hidden" name="min" id="hdnMinPrice" value="{{$min_price}}" >
+   <input type="hidden" name="max" id="hdnMaxPrice" value="{{$max_price}}" >
+
+
 
   </form>
 
@@ -265,6 +271,18 @@
                 $("#hdnCategories").val(categories);
                 $("#frmfilter").submit();
             });
+      $("[name='price_range']").on("change",function(){
+        var min=$(this).val().split(',')[0];
+        var max=$(this).val().split(',')[1];
+        $("#hdnMinPrice").val(min);
+        $("#hdnMaxPrice").val(max);
+        setTimeout(()=>{
+          $("#frmfilter").submit();
+
+        },2000);
+       
+
+      });
 
             $("[name='price_range']").on("change",function(){
               var min=$(this).val().split(",")[0];

@@ -28,7 +28,7 @@
                 New Arrivals</h6>
               <h2 class="h1 fw-normal mb-0 animate animate_fade animate_btt animate_delay-5">Brand New</h2>
               <h2 class="h1 fw-bold animate animate_fade animate_btt animate_delay-5">Supplements</h2>
-              <a href="#"
+              <a href="{{route('shop.indexx')}}"
                 class="btn-link btn-link_lg default-underline fw-medium animate animate_fade animate_btt animate_delay-7">Shop
                 Now</a>
             </div>
@@ -164,7 +164,7 @@
                 <div class="swiper-slide">
                   <img loading="lazy" class="mb-3 borderr" src="{{ asset('uploads/categories/' . $categorie->image) }}" alt="{{ $categorie->name }}" />
                   <div class="text-center">
-                    <a href="#" class="menu-link fw-medium">{{ $categorie->name }}</a>
+                    <a href="{{ url('/shop?page=1&size=12&order=-1&categories=' . $categorie->id . '&min=1&max=500') }}" class="menu-link fw-medium">{{ $categorie->name }}</a>
                   </div>
                 </div>
               @endforeach
@@ -346,14 +346,14 @@
             <div class="col-6 col-md-4 col-lg-3">
                 <div class="product-card product-card_style3 mb-3 mb-md-4 mb-xxl-5">
                   <div class="pc__img-wrapper">
-                    <a href="details.html">
+                    <a href="{{route('shop.products.details',['product_slug'=>$f->slug])}}">
                       <img loading="lazy" src="{{ asset('uploads/products/'.$f->image)}}" width="330" height="400"
                         alt="" class="pc__img">
                     </a>
                   </div>
 
                   <div class="pc__info position-relative">
-                    <h6 class="pc__title"><a href="details.html">{{$f->name}}</a></h6>
+                    <h6 class="pc__title"><a href="{{route('shop.products.details',['product_slug'=>$f->slug])}}">{{$f->name}}</a></h6>
                     <div class="product-card__price d-flex align-items-center">
                       <span class="money price text-secondary">{{$f->sale_price}}</span>
                     </div>

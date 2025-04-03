@@ -14,8 +14,8 @@
                                     <i class="icon-shopping-bag"></i>
                                 </div>
                                 <div>
-                                    <div class="body-text mb-2">Total Orders</div>
-                                    <h4>3</h4>
+                                    <div class="body-text mb-2">Total Categories</div>
+                                    <h4>{{$categories->count()}}</h4>
                                 </div>
                             </div>
                         </div>

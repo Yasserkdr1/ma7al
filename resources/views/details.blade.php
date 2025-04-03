@@ -1,6 +1,18 @@
 @extends('layouts.app')
 @section('content')
 
+<style>
+  .imp{
+    max-width: 100%; /* L'image prendra au maximum la largeur du conteneur */
+  width: 150px;    /* Vous pouvez ajuster cette valeur selon vos besoins */
+  height: 150px;    /* Conserve le ratio d'aspect */
+  object-fit: contain;
+
+  }
+  
+  
+</style>
+
 <main class="pt-90">
     <div class="mb-md-1 pb-md-3"></div>
     <section class="product-single container">
@@ -11,8 +23,7 @@
               <div class="swiper-container">
                 <div class="swiper-wrapper">
                   <div class="swiper-slide product-single__image-item">
-                    <img loading="lazy" class="h-auto" src="{{asset('uploads/products/'.$product->image)}}" width="674"
-                      height="674" alt="" />
+                    <img loading="lazy" class="h-auto imp" src="{{asset('uploads/products/'.$product->image)}}" alt="" />
                     <a data-fancybox="gallery" href="../images/products/product_0.html" data-bs-toggle="tooltip"
                       data-bs-placement="left" title="Zoom">
                       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -21,8 +32,7 @@
                     </a>
                   </div>
                   <div class="swiper-slide product-single__image-item">
-                    <img loading="lazy" class="h-auto" src="assets/images/products/product_0-1.jpg" width="674"
-                      height="674" alt="" />
+                    <img loading="lazy" class="h-auto" src="{{asset('uploads/products/'.$product->image)}}" style="width: 100px !important; height: 100px !important;" alt="" />
                     <a data-fancybox="gallery" href="../images/products/product_0-1.html" data-bs-toggle="tooltip"
                       data-bs-placement="left" title="Zoom">
                       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -228,7 +238,7 @@
 
             <div class="swiper-slide product-card">
               <div class="pc__img-wrapper">
-                <a href="details.html">
+                <a href="{{route('shop.products.details',['product_slug'=>$p->slug])}}">
                   <img loading="lazy" src="{{asset('uploads/products/'.$p->image)}}" width="330" height="400"
                     alt="Cropped Faux leather Jacket" class="pc__img">
                   <img loading="lazy" src="{{asset('uploads/products/'.$p->image)}}" width="330" height="400"
@@ -253,7 +263,7 @@
 
               <div class="pc__info position-relative">
                 <p class="pc__category">{{$p->category->name}}</p>
-                <h6 class="pc__title"><a href="{{route('shop.products.details',['product_slug'=>$product->slug])}}">{{$p->name}}</a></h6>
+                <h6 class="pc__title"><a href="{{route('shop.products.details',['product_slug'=>$p->slug])}}">{{$p->name}}</a></h6>
                 <div class="product-card__price d-flex">
                   <span class="money price">{{$p->sale_price}}</span>
                 </div>

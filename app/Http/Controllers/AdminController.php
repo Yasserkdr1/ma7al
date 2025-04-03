@@ -14,8 +14,13 @@ use Intervention\Image\Laravel\Facades\Image;
 class AdminController extends Controller
 {
     public function index()
+
     {
-        return view('admin.indexx');
+        $categories = Category::with('products')->orderBy('id', 'DESC')->get();
+        $products = Product::OrderBy('id')->get();
+
+
+        return view('admin.indexx', compact('categories','products'));
     }
 
 
@@ -35,11 +40,12 @@ class AdminController extends Controller
     }
 
     public function category_update(Request $request){
-        $request->validate ([
-            'name'=> 'required',
-            'slug'=> 'required|unique:categories,slug'.$request->id,
-            'image'=> 'mimes:png,jpg,jpeg'
+        $request->validate([
+            'name'  => 'required',
+            'slug'  => 'required|unique:categories,slug,'.$request->id,
+            'image' => 'mimes:png,jpg,jpeg'
         ]);
+        
 
         $category = Category::find($request->id);
         $category =new Category();
@@ -185,10 +191,10 @@ class AdminController extends Controller
     }
 
 
-    public function orders(){
-        $orders=Order::orderBy('created_at','DESC')->paginate(12);
-        return view('admin.orders',compact('orders')); 
-    }
+    // public function orders(){
+    //     $orders=Order::orderBy('created_at','DESC')->paginate(12);
+    //     return view('admin.orders',compact('orders')); 
+    // }
 
 
 
