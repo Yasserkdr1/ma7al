@@ -10,17 +10,33 @@ use App\Models\Order;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Laravel\Facades\Image;
+use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
     public function index()
 
-    {
+    {   
+        $orders =Order::orderBy('created_at','DESC')->get()->take(10);
+        $dashboardDatas=DB::select("SELECT 
+    SUM(total) AS TotalAmount, 
+    SUM(IF(status='ordered', total, 0)) AS TotalOrderedAmount, 
+    SUM(IF(status='canceled', total, 0)) AS TotalCanceledAmount, 
+    SUM(IF(status='delivered', total, 0)) AS TotalDeliveredAmount,  -- Correction ici
+    COUNT(*) AS Total, 
+    SUM(IF(status='ordered', 1, 0)) AS TotalOrdered, 
+    SUM(IF(status='canceled', 1, 0)) AS TotalCanceled, 
+    SUM(IF(status='delivered', 1, 0)) AS TotalDelivered
+FROM Orders
+        ");
+
+        
+
         $categories = Category::with('products')->orderBy('id', 'DESC')->get();
         $products = Product::OrderBy('id')->get();
 
 
-        return view('admin.indexx', compact('categories','products'));
+        return view('admin.indexx', compact('categories','products','orders','dashboardDatas'));
     }
 
 
@@ -80,8 +96,8 @@ class AdminController extends Controller
     public function GenerateCategryImage($image ,$imageName){
         $destinationPath = public_path('uploads/categories');
         $img= Image::read($image->path());
-        $img->cover(124,124,"top");
-        $img->resize(124,124,function($constraint){
+        $img->cover(350,350,"top");
+        $img->resize(350,350,function($constraint){
             $constraint->aspectRatio();
         })->save($destinationPath.'/'.$imageName);
 
