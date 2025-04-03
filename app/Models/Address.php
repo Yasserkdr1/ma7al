@@ -9,7 +9,7 @@ class Address extends Model
 {
     use HasFactory;
 
-    protected $table = 'adresses'; // ✅ Use the correct table name
+    protected $table = 'adresses'; 
 
     protected $fillable = ['user_id', 'isdefault']; // Adjust based on your columns
 }

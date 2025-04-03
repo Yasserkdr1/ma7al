@@ -191,10 +191,10 @@ class AdminController extends Controller
     }
 
 
-    // public function orders(){
-    //     $orders=Order::orderBy('created_at','DESC')->paginate(12);
-    //     return view('admin.orders',compact('orders')); 
-    // }
+     public function orders(){
+         $orders=Order::orderBy('created_at','DESC')->paginate(12);
+         return view('admin.orders',compact('orders')); 
+     }
 
 
 
