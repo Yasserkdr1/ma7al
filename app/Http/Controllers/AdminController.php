@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use App\Models\Order;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Laravel\Facades\Image;
@@ -181,6 +182,12 @@ class AdminController extends Controller
         }
         $product->delete();
         return redirect()->route('admin.products')->with('status','Product has been deleted successfully !');
+    }
+
+
+    public function orders(){
+        $orders=Order::orderBy('created_at','DESC')->paginate(12);
+        return view('admin.orders',compact('orders')); 
     }
 
 

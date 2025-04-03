@@ -55,6 +55,7 @@ Route::middleware(['auth','auth.admin'])->group(function(){
     Route::get('/admin/products/add',[AdminController::class, 'product_add'])->name('admin.product.add');
     Route::post('/admin/product/store',[AdminController::class,'product_store'])->name('admin.product.store');
     Route::delete('/admin/product/{id}/delete',[AdminController::class,'product_delete'])->name('admin.product.delete');
+    Route::get('/admin/orders',[AdminController::class,'orders'])->name('admin.orders');
 
 });
 
