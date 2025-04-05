@@ -35,13 +35,14 @@
                 <a class="tf-button style-1 w208" href="{{route('admin.product.add')}}"><i
                         class="icon-plus"></i>Add new</a>
             </div>
-            <div class="table-responsive">
+        
+            <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
                 @if (Session::has('status')){
                     <p class="alert alert-success">{{Session::get('status')}}</p>
                 }
 
                 @endif
-                <table class="table table-striped table-bordered">
+                <table class="table table-striped table-bordered table-container">
                     <thead>
                         <tr>
                             <th>#</th>
@@ -81,7 +82,7 @@
                                             <i class="icon-eye"></i>
                                         </div>
                                     </a>
-                                    <a href="#">
+                                    <a href="{{route('admin.product.edit',['id'=>$product->id])}}">
                                         <div class="item edit">
                                             <i class="icon-edit-3"></i>
                                         </div>
@@ -101,11 +102,13 @@
                 </table>
             </div>
 
-            <div class="divider"></div>
+            <div class="divider">
             <div class="flex items-center justify-between flex-wrap gap10 wgp-pagination">
                 {{$products->links('pagination::bootstrap-5')}}
 
 
+            </div>
+            
             </div>
         </div>
     </div>

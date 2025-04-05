@@ -9,6 +9,13 @@
   object-fit: contain;
 
   }
+  .product-single {
+  max-width: 1100px !important;
+  margin-top: 30px;
+
+  /* Ajustez la valeur selon vos besoins */
+    /* Centrer le conteneur */
+}
   
   
 </style>
@@ -265,7 +272,7 @@
                 <p class="pc__category">{{$p->category->name}}</p>
                 <h6 class="pc__title"><a href="{{route('shop.products.details',['product_slug'=>$p->slug])}}">{{$p->name}}</a></h6>
                 <div class="product-card__price d-flex">
-                  <span class="money price">{{$p->sale_price}}</span>
+                  <span class="money price">${{$p->sale_price}}</span>
                 </div>
 
                 <button class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist"

@@ -7,6 +7,12 @@ use Surfsidemedia\Shoppingcart\Facades\Cart;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Address;
+use App\Models\Order;
+use Illuminate\Support\Facades\Session;
+use App\Models\OrderItem;
+use App\Models\Transaction;
+use Stripe\Stripe;
+use Stripe\Charge;
 
 class CartControler extends Controller
 {
@@ -73,4 +79,146 @@ class CartControler extends Controller
 
         return view('checkout', compact('adresse'));
     }
+
+    public function place_order(Request $request)
+    {
+        $user_id = Auth::user()->id;
+        $address = Address::where('user_id', $user_id)->where('isdefault', true)->first();
+    
+        if (!$address) {
+            $request->validate([
+                'name' => 'required|max:100',
+                'phone' => 'required|numeric|digits:15',
+                'zip' => 'required|numeric|digits:6',
+                'state' => 'required',
+                'city' => 'required',
+                'address' => 'required',
+                'locality' => 'required',
+                'landmark' => 'required',
+            ]);
+            $address = new Address();
+            $address->name = $request->name;
+            $address->phone = $request->phone;
+            $address->zip = $request->zip;
+            $address->state = $request->state;
+            $address->city = $request->city;
+            $address->address = $request->address;
+            $address->locality = $request->locality;
+            $address->landmark = $request->landmark;
+            $address->country = 'Morocco';
+            $address->user_id = $user_id;
+            $address->isdefault = true;
+            $address->save();
+        }
+    
+        $this->setAmountforCheckout();
+    
+        $order = new Order();
+        $order->user_id = $user_id;
+        $order->Subtotal = Session::get('checkout')['Subtotal'];
+        $order->discount = Session::get('checkout')['shipping'];
+        $order->tax = Session::get('checkout')['tax'];
+        $order->total = Session::get('checkout')['total'];
+        $order->name = $address->name;
+        $order->phone = $address->phone;
+        $order->zip = $address->zip;
+        $order->state = $address->state;
+        $order->city = $address->city;
+        $order->address = $address->address;
+        $order->locality = $address->locality;
+        $order->landmark = $address->landmark;
+        $order->country = $address->country;
+        $order->type = 'home';
+        $order->status = 'ordered';
+    
+        $order->save();
+    
+        foreach (Cart::instance('cart')->content() as $item) {
+            $orderItem = new OrderItem();
+            $orderItem->product_id = $item->id;
+            $orderItem->order_id = $order->id;
+            $orderItem->quantity = $item->qty;
+            $orderItem->price = $item->price;
+            $orderItem->save();
+        }
+    
+        // Utiliser $request->mode pour toutes les vérifications
+        if($request->mode == 'card'){
+            \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+    
+            try {
+                $charge = \Stripe\Charge::create([
+                    'amount' => Session::get('checkout')['total'] * 100, // en centimes
+                    'currency' => 'mad', // changer selon la devise choisie
+                    'description' => 'Order ID: ' . $order->id,
+                    'source' => $request->stripeToken,
+                    'metadata' => [
+                        'order_id' => $order->id,
+                        'user_id' => $user_id,
+                    ],
+                ]);
+    
+                // Sauvegarde de la transaction en cas de succès
+                $transaction = new Transaction();
+                $transaction->user_id = $user_id;
+                $transaction->order_id = $order->id;
+                $transaction->mode = 'card';
+                $transaction->status = 'approved';
+                $transaction->transaction_id = $charge->id;
+                $transaction->save();
+    
+            } catch (\Exception $e) {
+                // Gestion de l'erreur : suppression de la commande et retour avec erreur
+                $order->delete();
+                return redirect()->back()->withErrors(['msg' => 'Paiement échoué: ' . $e->getMessage()]);
+            }
+        } elseif($request->mode == 'paypal'){
+            // Intégrer Paypal ici
+        } elseif($request->mode == 'cod'){
+            $transaction = new Transaction();
+            $transaction->user_id = $user_id;
+            $transaction->order_id = $order->id;
+            $transaction->mode = 'cod';
+            $transaction->status = 'pending';
+            $transaction->save();
+        }
+    
+        Cart::instance('cart')->destroy();
+        Session::forget('checkout');
+        Session::put('order_id', $order->id);
+    
+        return redirect()->route('cart.order.confirmation');
+    }
+    
+    public function setAmountforCheckout(){
+        if (!Cart::instance('cart')->content()->count() > 0) {
+            Session::forget('checkout');
+            return;
+        }
+        else{
+            
+            $shipping = 0;
+           
+            Session::put('checkout', [
+                'shipping'=>$shipping,
+                
+                'total' => Cart::instance('cart')->total(),
+                'tax'=>Cart::instance('cart')->tax(),
+                'Subtotal' => Cart::instance('cart')->subtotal()
+            ]);
+        }
+    }
+
+
+    public function order_confirmation()
+    {
+        if (Session::has('order_id')) {
+            $order=Order::find(Session::get('order_id'));
+            return view('order-confirmation', compact('order'));
+        }
+        return redirect()->route('cart.indexx');
+    }
+
+
+
 }

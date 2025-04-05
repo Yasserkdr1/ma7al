@@ -20,6 +20,7 @@ Route::middleware(['auth'])->group(function(){
 });
 Route::get('/cart',[CartControler::class,'index'])->name('cart.index');
 Route::post('/cart/add',[CartControler::class,'add_to_cart'])->name('cart.add');
+Route::get('/about',[HomeController::class,'about'])->name('about.indexx');
 
 Route::get('/shop',[ShopController::class,'index'])->name('shop.indexx');
 Route::get('/shop/{product_slug}',[ShopController::class,'product_details'])->name('shop.products.details');
@@ -33,6 +34,8 @@ Route::delete('/cart/clear',[CartControler::class,'empty_cart'])->name('cart.emp
 
 
 Route::get('/checkout',[CartControler::class,'checkout'])->name('cart.checkout');
+Route::post('/place-order',[CartControler::class,'place_order'])->name('cart.place.order'); 
+Route::get('/order-confirmation',[CartControler::class,'order_confirmation'])->name('cart.order.confirmation');
 
 
 
@@ -56,6 +59,8 @@ Route::middleware(['auth','auth.admin'])->group(function(){
     Route::post('/admin/product/store',[AdminController::class,'product_store'])->name('admin.product.store');
     Route::delete('/admin/product/{id}/delete',[AdminController::class,'product_delete'])->name('admin.product.delete');
     Route::get('/admin/orders',[AdminController::class,'orders'])->name('admin.orders');
+    Route::get('/admin/product/{id}/edit',[AdminController::class,'product_edit'])->name('admin.product.edit');
+    Route::put('/admin/products/update',[AdminController::class,'product_update'])->name('admin.product.update');
 
 });
 

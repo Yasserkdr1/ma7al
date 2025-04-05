@@ -162,6 +162,7 @@
             <div class="swiper-wrapper">
               @foreach($categories as $categorie)
                 <div class="swiper-slide">
+                <a href="{{ url('/shop?page=1&size=12&order=-1&categories=' . $categorie->id . '&min=1&max=500') }}">
                   <img loading="lazy" class="mb-3 borderr" src="{{ asset('uploads/categories/' . $categorie->image) }}" alt="{{ $categorie->name }}" />
                   <div class="text-center">
                     <a href="{{ url('/shop?page=1&size=12&order=-1&categories=' . $categorie->id . '&min=1&max=500') }}" class="menu-link fw-medium">{{ $categorie->name }}</a>
@@ -311,10 +312,10 @@
               <img loading="lazy" class="h-auto dt" src="{{ asset('assets/images/banner1.jpg')}}" 
                 alt="" />
               <div class="category-banner__item-mark">
-                Starting at $19
+                Starting at $19.99
               </div>
               <div class="category-banner__item-content">
-                <h3 class="mb-0">Creatine </h3>
+                <h3 class="mb-0">NEW COLLECTION </h3>
                 <a href="{{route('shop.indexx')}}" class="btn-link default-underline text-uppercase fw-medium">Shop Now</a>
               </div>
             </div>
@@ -324,10 +325,10 @@
               <img loading="lazy" class="h-auto dt" src="{{ asset('assets/images/banner4.jpg')}}"
                 alt="" />
               <div class="category-banner__item-mark">
-                Starting at $19
+                Starting at $9.99
               </div>
               <div class="category-banner__item-content">
-                <h3 class="mb-0">Sleeping vitas</h3>
+                <h3 class="mb-0">MULTIVITAMINS</h3>
                 <a href="{{route('shop.indexx')}}" class="btn-link default-underline text-uppercase fw-medium">Shop Now</a>
               </div>
             </div>

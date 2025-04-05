@@ -87,7 +87,7 @@
 @push('scripts')
 <script>
     $(function(){
-        $("#myFile").on("change"function(e){
+        $("#myFile").on("change",function(e){
             const photoInp=$("#myFile");
             const [file]=this.files;
             if(file){
@@ -96,7 +96,7 @@
 
             }
         });
-        $("input[name='name']").on("change"function(){
+        $("input[name='name']").on("change",function(){
             $("input[name='slug']").val(stringToSlug($(this).val()));
 
         });

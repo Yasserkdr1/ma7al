@@ -34,13 +34,13 @@
                 </div>
             </div>
             <div class="wg-table table-all-user">
-                <div class="table-responsive">
+                <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
                     <table class="table table-striped table-bordered">
                         <thead>
                             <tr>
                                 <th style="width:70px">OrderNo</th>
                                 <th class="text-center">Name</th>
-                                <th class="text-center">Phone</th>
+                                <th class="text-center" style="width:150px">Phone</th>
                                 <th class="text-center">Subtotal</th>
                                 <th class="text-center">Tax</th>
                                 <th class="text-center">Total</th>
@@ -58,10 +58,10 @@
                                 <td class="text-center">{{$order->id}}</td>
                                 <td class="text-center">{{$order->name}}</td>
                                 <td class="text-center">{{$order->phone}}</td>
-                                <td class="text-center">{{$order->Subtotal}}</td>
+                                <td class="text-center">{{$order->subtotal}}</td>
                                 <td class="text-center">{{$order->tax}}</td>
                                 <td class="text-center">{{$order->total}}</td>
-                                <td class="text-center">{{$order->Status}}</td>
+                                <td class="text-center">{{$order->status}}</td>
                                 <td class="text-center">{{$order->created_at}}</td>
                                 <td class="text-center">{{$order->orderItems->count()}}</td>
                                 <td class="text-center">{{$order->delivered_date}}</td>

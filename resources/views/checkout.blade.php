@@ -27,7 +27,8 @@
           </span>
         </a>
       </div>
-      <form name="checkout-form" action="">
+      <form name="checkout-form" action="{{route('cart.place.order')}}" method="POST">
+        @csrf
         <div class="checkout-form">
           <div class="billing-info__wrapper">
             <div class="row">
@@ -46,7 +47,7 @@
                         <p>{{$adresse->name}}</p>
                         <p>{{$adresse->address}}</p>
                         <p>{{$adresse->landmark}}</p>
-                        <p>{{$adresse->city}},{{$addresses->state}},{{$addresses->country}}</p>
+                        <p>{{$adresse->city}},{{$adresse->state}},{{$adresse->country}}</p>
                         <p>{{$adresse->zip}}</p>
                         <br>
                         <p>{{$adresse->phone}}</p>
@@ -168,59 +169,40 @@
                 </table>
               </div>
               <div class="checkout__payment-methods">
-                <div class="form-check">
-                  <input class="form-check-input form-check-input_fill" type="radio" name="checkout_payment_method"
-                    id="checkout_payment_method_1" checked>
-                  <label class="form-check-label" for="checkout_payment_method_1">
-                    Direct bank transfer
-                    <p class="option-detail">
-                      Make your payment directly into our bank account. Please use your Order ID as the payment
-                      reference.Your order will not be shipped until the funds have cleared in our account.
-                    </p>
-                  </label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input form-check-input_fill" type="radio" name="checkout_payment_method"
-                    id="checkout_payment_method_2">
-                  <label class="form-check-label" for="checkout_payment_method_2">
-                    Check payments
-                    <p class="option-detail">
-                      Phasellus sed volutpat orci. Fusce eget lore mauris vehicula elementum gravida nec dui. Aenean
-                      aliquam varius ipsum, non ultricies tellus sodales eu. Donec dignissim viverra nunc, ut aliquet
-                      magna posuere eget.
-                    </p>
-                  </label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input form-check-input_fill" type="radio" name="checkout_payment_method"
-                    id="checkout_payment_method_3">
-                  <label class="form-check-label" for="checkout_payment_method_3">
-                    Cash on delivery
-                    <p class="option-detail">
-                      Phasellus sed volutpat orci. Fusce eget lore mauris vehicula elementum gravida nec dui. Aenean
-                      aliquam varius ipsum, non ultricies tellus sodales eu. Donec dignissim viverra nunc, ut aliquet
-                      magna posuere eget.
-                    </p>
-                  </label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input form-check-input_fill" type="radio" name="checkout_payment_method"
-                    id="checkout_payment_method_4">
-                  <label class="form-check-label" for="checkout_payment_method_4">
-                    Paypal
-                    <p class="option-detail">
-                      Phasellus sed volutpat orci. Fusce eget lore mauris vehicula elementum gravida nec dui. Aenean
-                      aliquam varius ipsum, non ultricies tellus sodales eu. Donec dignissim viverra nunc, ut aliquet
-                      magna posuere eget.
-                    </p>
-                  </label>
-                </div>
-                <div class="policy-text">
-                  Your personal data will be used to process your order, support your experience throughout this
-                  website, and for other purposes described in our <a href="terms.html" target="_blank">privacy
-                    policy</a>.
-                </div>
-              </div>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="mode" id="mode1" value="card">
+    <label class="form-check-label" for="mode1">
+      Debit or Credit Card
+    </label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="mode" id="mode2" value="paypal">
+    <label class="form-check-label" for="mode2">
+      Paypal
+    </label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="mode" id="mode3"  value="cod">
+    <label class="form-check-label" for="mode3">
+      Cash on delivery
+    </label>
+  </div>
+  <div class="policy-text">
+    Your personal data will be used to process your order, support your experience throughout this
+    website, and for other purposes described in our <a href="terms.html" target="_blank">privacy policy</a>.
+  </div>
+</div>
+
+<!-- Bloc pour saisir les informations de carte via Stripe Elements -->
+<div id="stripe-card-section" style="display:none; margin-top:20px;">
+  <label for="card-element">Informations de la carte</label>
+  <div id="card-element" style="padding: 10px; border: 1px solid #ccc; border-radius: 4px;"></div>
+  <div id="card-errors" role="alert" style="color: red; margin-top:10px;"></div>
+  <!-- Champ caché pour recevoir le token Stripe -->
+  <input type="hidden" name="stripeToken" id="stripeToken">
+</div>
+
+
               <button class="btn btn-primary btn-checkout">PLACE ORDER</button>
             </div>
           </div>
@@ -229,3 +211,47 @@
     </section>
   </main>
 @endsection
+@push('scripts')
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+  // Fonction pour afficher ou masquer le bloc de paiement par carte
+  document.addEventListener('DOMContentLoaded', function() {
+    const modeRadios = document.getElementsByName('mode');
+    const stripeSection = document.getElementById('stripe-card-section');
+
+    modeRadios.forEach(function(radio) {
+      radio.addEventListener('change', function() {
+        if (this.value === 'card') {
+          stripeSection.style.display = 'block';
+        } else {
+          stripeSection.style.display = 'none';
+        }
+      });
+    });
+  });
+
+  // Initialisation de Stripe Elements
+  const stripe = Stripe("{{ env('STRIPE_KEY') }}"); // Ta clé publique Stripe
+  const elements = stripe.elements();
+  const cardElement = elements.create('card');
+  cardElement.mount('#card-element');
+
+  // Gestion de la création du token lors de la soumission du formulaire
+  const checkoutForm = document.forms['checkout-form'];
+  checkoutForm.addEventListener('submit', async function(e) {
+    // Si l'utilisateur a sélectionné 'card', générer le token Stripe
+    if(document.querySelector('input[name="mode"]:checked').value === 'card') {
+      e.preventDefault();
+      const { token, error } = await stripe.createToken(cardElement);
+      if (error) {
+        document.getElementById('card-errors').textContent = error.message;
+      } else {
+        // Injecter le token dans le formulaire et soumettre
+        document.getElementById('stripeToken').value = token.id;
+        checkoutForm.submit();
+      }
+    }
+  });
+</script>
+
+@endpush

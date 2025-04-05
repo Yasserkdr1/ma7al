@@ -66,23 +66,25 @@
 
                 </div>
                 <div class="wg-box">
-                    <fieldset>
-                        <div class="body-title">Upload images <span class="tf-color-1">*</span></div>
-                        <div class="upload-image flex-grow">
-                            <div class="item" id="imgpreview" >
-                                <img src="{{ asset('images/upload/upload-1.png') }}" class="effect8" alt="">
-                            </div>
-                            <div id="upload-file" class="item up-load">
-                                <label class="uploadfile" for="myFile">
-                                    <span class="icon">
-                                        <i class="icon-upload-cloud"></i>
-                                    </span>
-                                    <span class="body-text">Drop your images here or select <span class="tf-color">click to browse</span></span>
-                                    <input type="file" id="myFile" name="image" accept="image/*">
-                                </label>
-                            </div>
+                <fieldset>
+                    <div class="body-title">Upload images <span class="tf-color-1">*</span>
+                    </div>
+                    <div class="upload-image flex-grow">
+                        <div class="item" id="imgpreview" style="display:none">
+                            <img src="upload-1.html" class="effect8" alt="">
                         </div>
-                    </fieldset>
+                        <div id="upload-file" class="item up-load">
+                            <label class="uploadfile" for="myFile">
+                                <span class="icon">
+                                    <i class="icon-upload-cloud"></i>
+                                </span>
+                                <span class="body-text">Drop your images here or select <span
+                                        class="tf-color">click to browse</span></span>
+                                <input type="file" id="myFile" name="image" accept="image/*">
+                            </label>
+                        </div>
+                    </div>
+                </fieldset>
                     @error("image") <span class="alert alert-danger text-center">{{$message}}</span> @enderror
                     <div class="cols gap22">
                         <fieldset class="name">
@@ -135,7 +137,7 @@
 @push('scripts')
 <script>
     $(function(){
-        $("#myFile").on("change"function(e){
+        $("#myFile").on("change",function(e){
             const photoInp=$("#myFile");
             const [file]=this.files;
             if(file){
@@ -144,7 +146,7 @@
 
             }
         });
-        $("input[name='name']").on("change"function(){
+        $("input[name='name']").on("change",function(){
             $("input[name='slug']").val(stringToSlug($(this).val()));
 
         });

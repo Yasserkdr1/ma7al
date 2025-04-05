@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>WY-SPORT</title>
 
 
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -46,7 +46,7 @@
                     <div class="box-logo">
                         <a href="{{route('admin.indexx')}}" id="site-logo-inner">
                             {{-- <img class="" id="logo_header" alt="" src="{{ asset('assets/images/logo1.png')}}"> --}}
-                            {{-- <img src="{{ asset('assets/images/logo1.png')}}" style="height: 29px !imporant; width:100% !important" alt=""> --}}
+                            {{-- <img src="{{ asset('assets/images/logo1.png')}}" style="height: 29px !important; width:100% !important" alt=""> --}}
                         </a>
                         <div class="button-show-hide">
                             <i class="icon-menu-left"></i>
@@ -124,25 +124,13 @@
                                     </ul>
                                 </li>
                                 <li class="menu-item">
-                                    <a href="slider.html" class="">
-                                        <div class="icon"><i class="icon-image"></i></div>
-                                        <div class="text">Slider</div>
-                                    </a>
-                                </li>
-
-                                <li class="menu-item">
                                     <a href="users.html" class="">
                                         <div class="icon"><i class="icon-user"></i></div>
                                         <div class="text">User</div>
                                     </a>
                                 </li>
 
-                                <li class="menu-item">
-                                    <a href="settings.html" class="">
-                                        <div class="icon"><i class="icon-settings"></i></div>
-                                        <div class="text">Settings</div>
-                                    </a>
-                                </li>
+        
                                 <li class="menu-item">
                                     <form action="{{ route('logout')}}" method="POST" id="logout-form">
                                         @csrf

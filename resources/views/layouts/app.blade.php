@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>WY-SPORT</title>
 
 
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -322,7 +322,7 @@
               <a href="{{route('cart.index')}}" class="navigation__link">Cart</a>
             </li>
             <li class="navigation__item">
-              <a href="about.html" class="navigation__link">About</a>
+              <a href="{{route('about.indexx')}}" class="navigation__link">About</a>
             </li>
             <li class="navigation__item">
               <a href="contact.html" class="navigation__link">Contact</a>
@@ -411,7 +411,7 @@
               <a href="{{route('cart.index')}}" class="navigation__link">Cart</a>
             </li>
             <li class="navigation__item">
-              <a href="about.html" class="navigation__link">About</a>
+              <a href="{{route('about.indexx')}}" class="navigation__link">About</a>
             </li>
             <li class="navigation__item">
               <a href="contact.html" class="navigation__link">Contact</a>
@@ -586,8 +586,7 @@
         <div class="footer-column footer-menu mb-4 mb-lg-0">
           <h6 class="sub-menu__title text-uppercase">Shop</h6>
           <ul class="sub-menu__list list-unstyled">
-            <li class="sub-menu__item"><a href="shop2.html" class="menu-link menu-link_us-s">New Arrivals</a></li>
-            <li class="sub-menu__item"><a href="shop1.html" class="menu-link menu-link_us-s">Shop All</a></li>
+            <li class="sub-menu__item"><a href="{{route('shop.indexx')}}" class="menu-link menu-link_us-s">Shop All</a></li>
           </ul>
         </div>
 
@@ -595,7 +594,7 @@
           <h6 class="sub-menu__title text-uppercase">Help</h6>
           <ul class="sub-menu__list list-unstyled">
             <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Customer Service</a></li>
-            <li class="sub-menu__item"><a href="account_dashboard.html" class="menu-link menu-link_us-s">My Account</a>
+            <li class="sub-menu__item"><a href="route{{'user.indexx'}}" class="menu-link menu-link_us-s">My Account</a>
             </li>
 
           </ul>
@@ -603,11 +602,11 @@
 
         <div class="footer-column footer-menu mb-4 mb-lg-0">
           <h6 class="sub-menu__title text-uppercase">Categories</h6>
+          
           <ul class="sub-menu__list list-unstyled">
-            <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Health & Wellness</a></li>
-            <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Fitness supplements</a></li>
-            <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Equipments</a></li>
-
+          
+            <li class="sub-menu__item"><a href="" class="menu-link menu-link_us-s"></a></li>
+          
           </ul>
         </div>
       </div>
