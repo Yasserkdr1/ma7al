@@ -27,8 +27,9 @@
           </span>
         </a>
       </div>
-      <form name="checkout-form" action="{{route('cart.place.order')}}" method="POST">
+      <form name="" id="vt" action="{{route('cart.place.order')}}" method="POST">
         @csrf
+        @method('POST')
         <div class="checkout-form">
           <div class="billing-info__wrapper">
             <div class="row">
@@ -47,7 +48,7 @@
                         <p>{{$adresse->name}}</p>
                         <p>{{$adresse->address}}</p>
                         <p>{{$adresse->landmark}}</p>
-                        <p>{{$adresse->city}},{{$addresses->state}},{{$addresses->country}}</p>
+                        <p>{{$adresse->city}},{{$adresse->state}},{{$adresse->country}}</p>
                         <p>{{$adresse->zip}}</p>
                         <br>
                         <p>{{$adresse->phone}}</p>
@@ -169,39 +170,88 @@
                 </table>
               </div>
               <div class="checkout__payment-methods">
-                
-                <div class="form-check">
-                  <input class="form-check-input form-check-input_fill" type="radio" name="mode" id="mode1" value="card">
-                  <label class="form-check-label" for="mode1">
-                    Debit or Credit Card
-                  </label>
-                </div>
 
-                <div class="form-check">
-                  <input class="form-check-input form-check-input_fill" type="radio" name="mode" id="mode2" value="paypal">
-                  <label class="form-check-label" for="mode2">
-                    Paypal
-                  </label>
-                </div>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="mode" id="mode1" value="card">
+    <label class="form-check-label" for="mode1">
+      Debit or Credit Card
+    </label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="mode" id="mode2" value="paypal">
+    <label class="form-check-label" for="mode2">
+      Paypal
+    </label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="mode" id="mode3"  value="cod">
+    <label class="form-check-label" for="mode3">
+      Cash on delivery
+    </label>
+  </div>
+  <div class="policy-text">
+    Your personal data will be used to process your order, support your experience throughout this
+    website, and for other purposes described in our <a href="terms.html" target="_blank">privacy policy</a>.
+  </div>
+</div>
 
-                <div class="form-check">
-                  <input class="form-check-input form-check-input_fill" type="radio" name="mode" id="mode3"  value="cod">
-                  <label class="form-check-label" for="mode3">
-                    Cash on delivery
-                  </label>
-                </div>
-                
-                <div class="policy-text">
-                  Your personal data will be used to process your order, support your experience throughout this
-                  website, and for other purposes described in our <a href="terms.html" target="_blank">privacy
-                    policy</a>.
-                </div>
-              </div>
-              <button class="btn btn-primary btn-checkout">PLACE ORDER</button>
+<!-- Détails du paiement Stripe -->
+<div id="card-element"></div> <!-- Le champ pour la carte de crédit -->
+    <div id="card-errors" role="alert"></div> <!-- Affichage des erreurs -->
+
+             <input type="hidden" name="stripeToken" id="ok">
+              <button class="btn btn-primary btn-checkout place-order-button" id="ok">PLACE ORDER</button>
             </div>
           </div>
         </div>
       </form>
     </section>
   </main>
+  @php
+    $categories = \App\Models\Category::all();
+@endphp
 @endsection
+@push('scripts')
+<!-- Assurez-vous d'inclure le SDK Stripe -->
+<script src="https://js.stripe.com/v3/"></script>
+
+<script>
+     document.addEventListener("DOMContentLoaded", function () {
+    const stripe = Stripe('pk_test_51RAILD4FblrsMg7lgsuvMMyNauZIlBmexBr5fkLgdXJ0jdoY7ZgSB5BENSaqVxMEUFUkJkAfSJGGft4HbPaj2zOc00c8fN9RwJ');
+    const elements = stripe.elements();
+    const card = elements.create('card');
+    card.mount('#card-element');
+
+    const inputToken = document.getElementById('ok');
+    const errorDiv = document.getElementById('card-errors');
+
+  
+
+    
+    async function handleTokenCreation() {
+        
+        try {
+            const {token, error} = await stripe.createToken(card); 
+           
+
+            if (error) {
+                
+                console.error("Erreur lors de la création du token:", error);
+                errorDiv.textContent = error.message;
+            } else {
+                inputToken.value = token.id; 
+               
+            }
+        } catch (e) {
+            console.error("Erreur lors de la création du token:", e);
+        }
+    }
+
+   
+    handleTokenCreation();
+});
+
+</script>
+
+
+@endpush

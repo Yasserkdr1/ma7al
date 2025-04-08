@@ -1,5 +1,7 @@
 @extends('layouts.app')
-
+@php
+    $categories = \App\Models\Category::all();
+@endphp
 @section('content')
 <div class="container">
     <div class="row justify-content-center">

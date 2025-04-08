@@ -25,16 +25,32 @@ class HomeController extends Controller
     //  */
     public function index()
     {
-        $products = Product::orderBy('id', 'desc')->limit(6)->get();
+        $products = Product::orderBy('id')->limit(6)->get();
         $featureds = Product::where('featured', true)->get();
 
         $categories = Category::all();
         return view('indexx',compact('categories','products','featureds'));
     }
-    public function search(Request $request)
-    {
-        $query = $request->input('query');
-        $results = Product::where('name','LIKE',"%{$query}%")->get()->take(8);
+
+    public function about()
+
+    {  
+        $categories = Category::all();
+        
+        return view('about',compact('categories'));
+    }
+    public function shop()
+
+    {  
+        $categories = Category::all();
+        
+        return view('about',compact('categories'));
+    }
+
+    public function search(Request $request){
+        $query=$request->input('query');
+        $results=Product::where('name','LIKE',"%{$query}%")->get()->take(8);
         return response()->json($results);
     }
+
 }

@@ -10,26 +10,52 @@ use App\Models\Order;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Laravel\Facades\Image;
+use Illuminate\Support\Facades\DB;
+use App\Models\OrderItem;
+use App\Models\Transaction;
+
 
 class AdminController extends Controller
 {
     public function index()
 
-    {
+    {   
+        $orders =Order::orderBy('created_at','DESC')->get()->take(10);
+        $dashboardDatas=DB::select("SELECT 
+    SUM(total) AS TotalAmount, 
+    SUM(IF(status='ordered', total, 0)) AS TotalOrderedAmount, 
+    SUM(IF(status='canceled', total, 0)) AS TotalCanceledAmount, 
+    SUM(IF(status='delivered', total, 0)) AS TotalDeliveredAmount,  -- Correction ici
+    COUNT(*) AS Total, 
+    SUM(IF(status='ordered', 1, 0)) AS TotalOrdered, 
+    SUM(IF(status='canceled', 1, 0)) AS TotalCanceled, 
+    SUM(IF(status='delivered', 1, 0)) AS TotalDelivered
+FROM Orders
+        ");
+
+        
+
         $categories = Category::with('products')->orderBy('id', 'DESC')->get();
         $products = Product::OrderBy('id')->get();
 
 
-        return view('admin.indexx', compact('categories','products'));
+        return view('admin.indexx', compact('categories','products','orders','dashboardDatas'));
     }
 
 
     public function categories(){
-       $categories= Category::OrderBy('id','DESC')->paginate(10);
+       $categories= Category::OrderBy('id','DESC')->paginate(100);
        return view('admin.categories',compact('categories'));
     }
     public function category_add(){
         return view('admin.category-add');
+
+    }
+    public function list_categories(){
+        
+       $categories= Category::OrderBy('id','DESC')->get();
+       return view('layouts.app',compact('categories'));
+
 
     }
 
@@ -80,8 +106,8 @@ class AdminController extends Controller
     public function GenerateCategryImage($image ,$imageName){
         $destinationPath = public_path('uploads/categories');
         $img= Image::read($image->path());
-        $img->cover(124,124,"top");
-        $img->resize(124,124,function($constraint){
+        $img->cover(350,350,"top");
+        $img->resize(350,350,function($constraint){
             $constraint->aspectRatio();
         })->save($destinationPath.'/'.$imageName);
 
@@ -111,7 +137,7 @@ class AdminController extends Controller
 
     public function products(){
 
-        $products= Product::orderBy('created_at','DESC')->paginate(10);
+        $products= Product::orderBy('created_at','DESC')->paginate(100);
         return view('admin.products',compact('products'));
     }
 
@@ -192,9 +218,70 @@ class AdminController extends Controller
 
 
      public function orders(){
-         $orders=Order::orderBy('created_at','DESC')->paginate(12);
+         $orders=Order::orderBy('created_at','DESC')->paginate(100);
          return view('admin.orders',compact('orders')); 
      }
+
+     public function product_edit($id){
+        $product=Product::find($id);
+        $categories=Category::select('id','name')->orderBy('name')->get();
+        return view('admin.product-edit',compact('product','categories'));
+
+     }
+
+     public function product_update(Request $request){
+        $request->validate([
+            'name'=>'required',
+            'slug'=>'required|unique:products,slug,'.$request->id,
+            'short_description'=>'required',
+            'sale_price'=>'required',
+            'stock_status'=>'required',
+            'featured'=>'required',
+            'quantity'=>'required',
+            'image'=>'mimes:png,jpg,jpeg',
+            'category_id'=>'required'
+        ]);
+
+        $product=Product::find($request->id);
+        $product->name = $request->name;
+        $product->slug = Str::slug($request->name);
+        $product->short_description = $request->short_description;
+        $product->sale_price = $request->sale_price;
+        $product->stock_status = $request->stock_status;
+        $product->featured = $request->featured;
+        $product->quantity = $request->quantity;
+        $product->category_id =$request->category_id;
+        $current_timestamp = Carbon::now()->timestamp;
+
+        if($request->hasFile('image')){
+            if(File::exists(public_path('uploads/products').'/'.$product->image))
+            {
+                 File::delete(public_path('uploads/products').'/'.$product->image);
+            }
+            if(File::exists(public_path('uploads/products/thumbnails').'/'.$product->image))
+            {
+                 File::delete(public_path('uploads/products/thumbnails').'/'.$product->image);
+            }
+            $image =$request->file('image');
+            $imageName=$current_timestamp.'.'.$image->extension();
+            $this->GenerateProductThumbnailImage($image,$imageName);
+            $product->image =$imageName;
+
+        }
+        $product->save();
+        return redirect()->route('admin.products')->with('status','Products edited successfully');
+     }
+
+
+     public function search(Request $request){
+
+        $query=$request->input('query');
+        $results=Product::where('name','LIKE',"%{$query}%")->get()->take(8);
+        return response()->json($results);
+
+     }
+
+     
 
 
 

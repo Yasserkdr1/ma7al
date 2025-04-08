@@ -64,7 +64,8 @@ class ShopController extends Controller
 
         $product= Product::where('slug',$product_slug)->first();
         $rproducts= Product::where('slug','<>','$product_slug')->get()->take(8);
-        return view('details',compact('product','rproducts'));
+        $categories = Category::all();
+        return view('details',compact('product','rproducts','categories'));
     }
 
 

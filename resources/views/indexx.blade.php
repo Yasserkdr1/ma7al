@@ -162,6 +162,7 @@
             <div class="swiper-wrapper">
               @foreach($categories as $categorie)
                 <div class="swiper-slide">
+                <a href="{{ url('/shop?page=1&size=12&order=-1&categories=' . $categorie->id . '&min=1&max=500') }}">
                   <img loading="lazy" class="mb-3 borderr" src="{{ asset('uploads/categories/' . $categorie->image) }}" alt="{{ $categorie->name }}" />
                   <div class="text-center">
                     <a href="{{ url('/shop?page=1&size=12&order=-1&categories=' . $categorie->id . '&min=1&max=500') }}" class="menu-link fw-medium">{{ $categorie->name }}</a>
@@ -219,7 +220,7 @@
               </div>
             </div>
 
-            <a href="#" class="btn-link default-underline text-uppercase fw-medium mt-3">View All</a>
+            <a href="{{route('shop.indexx')}}" class="btn-link default-underline text-uppercase fw-medium mt-3">View All</a>
           </div>
           <div class="col-md-6 col-lg-8 col-xl-80per">
             <div class="position-relative">
@@ -251,7 +252,7 @@
                   @foreach($products as $product)
                     <div class="swiper-slide product-card product-card_style3 box">
                       <div class="pc__img-wrapper ">
-                        <a href="#">
+                        <a href="{{route('shop.products.details',['product_slug'=>$product->slug])}}">
                           <img loading="lazy" src="{{ asset('uploads/products/' . $product->image) }}" width="150" height="150" alt="{{ $product->name }}" class="pc__img">
                           <!-- Vous pouvez afficher une seconde image si disponible ou réutiliser la même -->
                           <img loading="lazy" src="{{ asset('uploads/products/' . $product->image) }}" width="150" height="150" alt="{{ $product->name }}" class="pc__img pc__img-second">
@@ -259,10 +260,10 @@
                       </div>
                       <div class="pc__info position-relative">
                         <h6 class="pc__title">
-                          <a href="#">{{ $product->name }}</a>
+                          <a href="{{route('shop.products.details',['product_slug'=>$product->slug])}}">{{ $product->name }}</a>
                         </h6>
                         <div class="product-card__price d-flex">
-                          <span class="money price text-secondary">{{ $product->sale_price }}€</span>
+                          <span class="money price text-secondary">${{ $product->sale_price }}</span>
                         </div>
 
                         <div class="anim_appear-bottom position-absolute bottom-0 start-0 d-none d-sm-flex align-items-center bg-body">
@@ -294,7 +295,7 @@
       <style>
         .dt {
             width: 100% !important;
-            height: 400px !important;
+            height: 600px !important;
             object-fit: cover;
             border-radius: 4px;
 
@@ -308,27 +309,27 @@
         <div class="row">
           <div class="col-md-6">
             <div class="category-banner__item border-radius-10 mb-5">
-              <img loading="lazy" class="h-auto dt" src="{{ asset('assets/images/af1.jpg')}}" width="690" height="665"
+              <img loading="lazy" class="h-auto dt" src="{{ asset('assets/images/banner1.jpg')}}" 
                 alt="" />
               <div class="category-banner__item-mark">
-                Starting at $19
+                Starting at $19.99
               </div>
               <div class="category-banner__item-content">
-                <h3 class="mb-0">Creatine </h3>
-                <a href="#" class="btn-link default-underline text-uppercase fw-medium">Shop Now</a>
+                <h3 class="mb-0">NEW COLLECTION </h3>
+                <a href="{{route('shop.indexx')}}" class="btn-link default-underline text-uppercase fw-medium">Shop Now</a>
               </div>
             </div>
           </div>
           <div class="col-md-6">
             <div class="category-banner__item border-radius-10 mb-5">
-              <img loading="lazy" class="h-auto dt" src="{{ asset('assets/images/aaff2.jpg')}}" width="690" height="665"
+              <img loading="lazy" class="h-auto dt" src="{{ asset('assets/images/banner4.jpg')}}"
                 alt="" />
               <div class="category-banner__item-mark">
-                Starting at $19
+                Starting at $9.99
               </div>
               <div class="category-banner__item-content">
-                <h3 class="mb-0">Sleeping vitas</h3>
-                <a href="#" class="btn-link default-underline text-uppercase fw-medium">Shop Now</a>
+                <h3 class="mb-0">MULTIVITAMINS</h3>
+                <a href="{{route('shop.indexx')}}" class="btn-link default-underline text-uppercase fw-medium">Shop Now</a>
               </div>
             </div>
           </div>
@@ -345,23 +346,42 @@
 
             <div class="col-6 col-md-4 col-lg-3">
                 <div class="product-card product-card_style3 mb-3 mb-md-4 mb-xxl-5">
+                  
                   <div class="pc__img-wrapper">
+                    
+
                     <a href="{{route('shop.products.details',['product_slug'=>$f->slug])}}">
+                      
                       <img loading="lazy" src="{{ asset('uploads/products/'.$f->image)}}" width="330" height="400"
                         alt="" class="pc__img">
+                        @if(Cart::instance('cart')->content()->where('id',$f->id)->count()>0)
+                        <a href="{{route('cart.index')}}" class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium btn-warning mb-3">Go to Cart</a>
+                    @else
+
+                      <form name="addtocart-form" method="post" action="{{route('cart.add')}}">
+                       @csrf
+                       <input type="hidden" name="id" value="{{$product->id}}">
+              <input type="hidden" name="name" value="{{$product->name}}">
+              <input type="hidden" name="sale_price" value="{{$product->sale_price}}">
+              <input type="hidden" name="image" value="{{$product->image}}">
+              <input type="hidden" name="quantity" value="1">
+              
+                       <button type="submit" class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium" data-aside="cartDrawer" title="Add To Cart">Add To Cart</button>
+                      </form>
+                    @endif
+                        
                     </a>
+                    
                   </div>
 
                   <div class="pc__info position-relative">
                     <h6 class="pc__title"><a href="{{route('shop.products.details',['product_slug'=>$f->slug])}}">{{$f->name}}</a></h6>
                     <div class="product-card__price d-flex align-items-center">
-                      <span class="money price text-secondary">{{$f->sale_price}}</span>
+                      <span class="money price text-secondary">${{$f->sale_price}}</span>
                     </div>
 
                     <div
                       class="anim_appear-bottom position-absolute bottom-0 start-0 d-none d-sm-flex align-items-center bg-body">
-                      <button class="btn-link btn-link_lg me-4 text-uppercase fw-medium js-add-cart js-open-aside"
-                        data-aside="cartDrawer" title="Add To Cart">Add To Cart</button>
                       <button class="btn-link btn-link_lg me-4 text-uppercase fw-medium js-quick-view"
                         data-bs-toggle="modal" data-bs-target="#quickView" title="Quick view">
                         <span class="d-none d-xxl-block">Quick View</span>

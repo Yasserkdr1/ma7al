@@ -1,5 +1,8 @@
 @extends('layouts.app')
 @section('content')
+@php
+    $categories = \App\Models\Category::all();
+@endphp
 <main class="pt-90">
     <div class="mb-4 pb-4"></div>
     <section class="shop-checkout container">

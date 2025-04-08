@@ -17,9 +17,12 @@ Auth::routes();
 Route::get('/', [HomeController::class,'index'])->name('home.indexx');
 Route::middleware(['auth'])->group(function(){
     Route::get('/account-dashboard',[UserController::class, 'index'])->name('user.indexx');
+    Route::get('/account-orders',[UserController::class,'orders'])->name('user.orders');
+    Route::get('/account-order/{order_id}/details',[UserController::class,'order_details'])->name('user.order.details');
 });
 Route::get('/cart',[CartControler::class,'index'])->name('cart.index');
 Route::post('/cart/add',[CartControler::class,'add_to_cart'])->name('cart.add');
+Route::get('/about',[HomeController::class,'about'])->name('about.indexx');
 
 Route::get('/shop',[ShopController::class,'index'])->name('shop.indexx');
 Route::get('/shop/{product_slug}',[ShopController::class,'product_details'])->name('shop.products.details');
@@ -33,13 +36,14 @@ Route::delete('/cart/clear',[CartControler::class,'empty_cart'])->name('cart.emp
 
 
 Route::get('/checkout',[CartControler::class,'checkout'])->name('cart.checkout');
-<<<<<<< HEAD
-Route::get('/search',[HomeController::class,'search'])->name('home.search');
-=======
 Route::post('/place-order',[CartControler::class,'place_order'])->name('cart.place.order'); 
 Route::get('/order-confirmation',[CartControler::class,'order_confirmation'])->name('cart.order.confirmation');
 
->>>>>>> 8ac21345b8d7e424c1b97b06cb79767e4d28c7a2
+
+Route::get('/search',[HomeController::class,'search'])->name('home.search');
+
+
+
 
 
 
@@ -62,6 +66,9 @@ Route::middleware(['auth','auth.admin'])->group(function(){
     Route::post('/admin/product/store',[AdminController::class,'product_store'])->name('admin.product.store');
     Route::delete('/admin/product/{id}/delete',[AdminController::class,'product_delete'])->name('admin.product.delete');
     Route::get('/admin/orders',[AdminController::class,'orders'])->name('admin.orders');
-
+    Route::get('/admin/product/{id}/edit',[AdminController::class,'product_edit'])->name('admin.product.edit');
+    Route::put('/admin/products/update',[AdminController::class,'product_update'])->name('admin.product.update');
+    Route::get('/admin.search',[AdminController::class,'search'])->name('admin.search');
+    
 });
 

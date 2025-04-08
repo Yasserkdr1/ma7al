@@ -7,8 +7,9 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>WY-SPORT</title>
 
 
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -263,6 +264,35 @@
     .logo__image {
       max-width: 220px;
     }
+    .product-item{
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 15px;
+      transition: all 0.3s ease;
+      padding-right: 5px;
+
+
+    }
+    .product-item .image{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 50px;
+      height: 50px;
+      gap: 10px;
+      flex-shrink: 0;
+      padding: 5px;
+      border-radius: 10px;
+      background: #EFF4F8;
+    }
+    #box-content-search li {
+      list-style: none;
+    }
+    #box-content-search .product-item{
+      margin-bottom: 10px;
+    }
+
   </style>
   <div class="header-mobile header_sticky">
     <div class="container d-flex align-items-center h-100">
@@ -322,11 +352,9 @@
               <a href="{{route('cart.index')}}" class="navigation__link">Cart</a>
             </li>
             <li class="navigation__item">
-              <a href="about.html" class="navigation__link">About</a>
+              <a href="{{route('about.indexx')}}" class="navigation__link">About</a>
             </li>
-            <li class="navigation__item">
-              <a href="contact.html" class="navigation__link">Contact</a>
-            </li>
+            
           </ul>
         </div>
       </div>
@@ -411,11 +439,9 @@
               <a href="{{route('cart.index')}}" class="navigation__link">Cart</a>
             </li>
             <li class="navigation__item">
-              <a href="about.html" class="navigation__link">About</a>
+              <a href="{{route('about.indexx')}}" class="navigation__link">About</a>
             </li>
-            <li class="navigation__item">
-              <a href="contact.html" class="navigation__link">Contact</a>
-            </li>
+            
           </ul>
         </nav>
 
@@ -574,8 +600,7 @@
         <div class="footer-column footer-menu mb-4 mb-lg-0">
           <h6 class="sub-menu__title text-uppercase">Shop</h6>
           <ul class="sub-menu__list list-unstyled">
-            <li class="sub-menu__item"><a href="shop2.html" class="menu-link menu-link_us-s">New Arrivals</a></li>
-            <li class="sub-menu__item"><a href="shop1.html" class="menu-link menu-link_us-s">Shop All</a></li>
+            <li class="sub-menu__item"><a href="{{route('shop.indexx')}}" class="menu-link menu-link_us-s">Shop All</a></li>
           </ul>
         </div>
 
@@ -583,7 +608,7 @@
           <h6 class="sub-menu__title text-uppercase">Help</h6>
           <ul class="sub-menu__list list-unstyled">
             <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Customer Service</a></li>
-            <li class="sub-menu__item"><a href="account_dashboard.html" class="menu-link menu-link_us-s">My Account</a>
+            <li class="sub-menu__item"><a href="route{{'user.indexx'}}" class="menu-link menu-link_us-s">My Account</a>
             </li>
 
           </ul>
@@ -591,11 +616,14 @@
 
         <div class="footer-column footer-menu mb-4 mb-lg-0">
           <h6 class="sub-menu__title text-uppercase">Categories</h6>
-          <ul class="sub-menu__list list-unstyled">
-            <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Health & Wellness</a></li>
-            <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Fitness supplements</a></li>
-            <li class="sub-menu__item"><a href="#" class="menu-link menu-link_us-s">Equipments</a></li>
+          
 
+          
+          <ul class="sub-menu__list list-unstyled">
+          @foreach ($categories as $c )
+          
+            <li class="sub-menu__item"><a href="{{ url('/shop?page=1&size=12&order=-1&categories=' . $c->id . '&min=1&max=500') }}" class="menu-link menu-link_us-s">{{$c->name}}</a></li>
+          @endforeach
           </ul>
         </div>
       </div>
@@ -659,47 +687,47 @@
   <script src="{{ asset('assets/js/plugins/swiper.min.js')}}"></script>
   <script src="{{ asset('assets/js/plugins/countdown.js')}}"></script>
   <script>
-    $(fucntion(){
-      $("#search-input").on("keyup",function(){
-        var searchQuery = $(this).val();
-        if(searchQuery.length > 2)
-      {
-        $.ajax({type:"get",
-          url:"{{route('home.search')}}",
-          date:{query:searchQuery},
-          dataType:'json',
-          success: function(data){
-            $("#box-content-search").html('');
-            $.each(data,function(index,item){
-              var url="{{route('shop.product.details',['product_slug'->'product_slug_pls'])}}";
-              var link= url.replace('product_slug_pls',item.slug);
-              $("#box-content-search").append(`
-                  <li>
-                    <ui>
-                     <li class="product-item gap14 mb-10">
-                      <div class ="image no-bg">
-                         <img src="{{asset('uploads/products/thumbnails')}}/${item.image}" alt="${item.name}">
+$(function(){
+  $("#search-input").on("keyup", function(){
+    var searchQuery = $(this).val();
+    if(searchQuery.length > 2) {
+      $.ajax({
+        type: "get",
+        url: "{{route('home.search')}}",
+        data: {query: searchQuery},
+        dataType: 'json',
+        success: function(data){
+          $("#box-content-search").html('');
+          $.each(data, function(index, item){
+            var url = "{{route('shop.products.details',['product_slug' => 'product_slug_pls'])}}";
+            var link = url.replace('product_slug_pls', item.slug);
+            $("#box-content-search").append(`
+              <li>
+                <ul>
+                  <li class="product-item gap14 mb-10">
+                    <div class="image no-bg">
+      
+                      <img src="{{asset('uploads/products/thumbnails')}}/${item.image}" alt="${item.name}">
+                    </div>
+                    <div class="flex items-center justify-between gap20 flex-grow">
+                      <div class="name">
+                        <a href="${link}" class="body-text">${item.name}</a>
                       </div>
-                      <div class="flex items-center justify-between gap20 flex-grow">
-                          <div class="name">
-                              <a href="${link}" class="body-text">${item.name}</a>
-                          </div>
-                      </div>
-                     </li>
-                     <li class="mb-10">
-                        <div class="divider"></div>
-                     </li>
-                    </ui>
+                    </div>
                   </li>
-              
-              `);
-            });
-          }
-        });
-       }
+                  <li class="mb-10">
+                    <div class="divider"></div>
+                  </li>
+                </ul>
+              </li>
+            `);
+          });
+        }
       });
-    });
-  </script>
+    }
+  });
+});
+</script>
 
   <script src="{{ asset('assets/js/theme.js')}}"></script>
   @stack("scripts")
