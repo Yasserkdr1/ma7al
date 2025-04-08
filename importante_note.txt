@@ -10,6 +10,6 @@ after opening the folder:
    npm run build
    php artisan key:generate
    php artisan migrate (go to php myadmin to check if tables are created)
-   php artisan make:seeder AdminSeeder (this will create a admin profile u can view the information related to such as email in database/seeder/adminseeder)
+   php artisan db:seed --class=AdminSeeder (this will create a admin profile u can view the information related to such as email in database/seeder/adminseeder)
    php artisan serve to run the server and get acces to the website
    ....

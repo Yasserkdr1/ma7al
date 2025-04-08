@@ -58,10 +58,6 @@
                 <td>
                   <div class="shopping-cart__product-item__detail">
                     <h4>{{$i->name}}</h4>
-                    <ul class="shopping-cart__product-item__options">
-                      <li>Color: Yellow</li>
-                      <li>Size: L</li>
-                    </ul>
                   </div>
                 </td>
                 <td>
@@ -162,6 +158,9 @@
       </div>
     </section>
   </main>
+  @php
+    $categories = \App\Models\Category::all();
+@endphp
 
 
 

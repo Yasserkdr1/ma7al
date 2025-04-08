@@ -17,6 +17,8 @@ Auth::routes();
 Route::get('/', [HomeController::class,'index'])->name('home.indexx');
 Route::middleware(['auth'])->group(function(){
     Route::get('/account-dashboard',[UserController::class, 'index'])->name('user.indexx');
+    Route::get('/account-orders',[UserController::class,'orders'])->name('user.orders');
+    Route::get('/account-order/{order_id}/details',[UserController::class,'order_details'])->name('user.order.details');
 });
 Route::get('/cart',[CartControler::class,'index'])->name('cart.index');
 Route::post('/cart/add',[CartControler::class,'add_to_cart'])->name('cart.add');
@@ -36,6 +38,11 @@ Route::delete('/cart/clear',[CartControler::class,'empty_cart'])->name('cart.emp
 Route::get('/checkout',[CartControler::class,'checkout'])->name('cart.checkout');
 Route::post('/place-order',[CartControler::class,'place_order'])->name('cart.place.order'); 
 Route::get('/order-confirmation',[CartControler::class,'order_confirmation'])->name('cart.order.confirmation');
+
+
+Route::get('/search',[HomeController::class,'search'])->name('home.search');
+
+
 
 
 
@@ -61,6 +68,7 @@ Route::middleware(['auth','auth.admin'])->group(function(){
     Route::get('/admin/orders',[AdminController::class,'orders'])->name('admin.orders');
     Route::get('/admin/product/{id}/edit',[AdminController::class,'product_edit'])->name('admin.product.edit');
     Route::put('/admin/products/update',[AdminController::class,'product_update'])->name('admin.product.update');
-
+    Route::get('/admin.search',[AdminController::class,'search'])->name('admin.search');
+    
 });
 

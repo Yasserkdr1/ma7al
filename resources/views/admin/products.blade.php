@@ -25,11 +25,15 @@
                     <form class="form-search">
                         <fieldset class="name">
                             <input type="text" placeholder="Search here..." class="" name="name"
-                                tabindex="2" value="" aria-required="true" required="">
+                                tabindex="2" value="" aria-required="true" required="" autocomplete="off">
                         </fieldset>
                         <div class="button-submit">
                             <button class="" type="submit"><i class="icon-search"></i></button>
                         </div>
+                        <div class="box-content-search" >
+                                        <ul id="box-content-search"></ul>
+                                        
+                                    </div>
                     </form>
                 </div>
                 <a class="tf-button style-1 w208" href="{{route('admin.product.add')}}"><i

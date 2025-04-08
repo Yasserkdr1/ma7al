@@ -27,8 +27,9 @@
           </span>
         </a>
       </div>
-      <form name="checkout-form" action="{{route('cart.place.order')}}" method="POST">
+      <form name="" id="vt" action="{{route('cart.place.order')}}" method="POST">
         @csrf
+        @method('POST')
         <div class="checkout-form">
           <div class="billing-info__wrapper">
             <div class="row">
@@ -169,6 +170,7 @@
                 </table>
               </div>
               <div class="checkout__payment-methods">
+
   <div class="form-check">
     <input class="form-check-input" type="radio" name="mode" id="mode1" value="card">
     <label class="form-check-label" for="mode1">
@@ -193,65 +195,63 @@
   </div>
 </div>
 
-<!-- Bloc pour saisir les informations de carte via Stripe Elements -->
-<div id="stripe-card-section" style="display:none; margin-top:20px;">
-  <label for="card-element">Informations de la carte</label>
-  <div id="card-element" style="padding: 10px; border: 1px solid #ccc; border-radius: 4px;"></div>
-  <div id="card-errors" role="alert" style="color: red; margin-top:10px;"></div>
-  <!-- Champ caché pour recevoir le token Stripe -->
-  <input type="hidden" name="stripeToken" id="stripeToken">
-</div>
+<!-- Détails du paiement Stripe -->
+<div id="card-element"></div> <!-- Le champ pour la carte de crédit -->
+    <div id="card-errors" role="alert"></div> <!-- Affichage des erreurs -->
 
-
-              <button class="btn btn-primary btn-checkout">PLACE ORDER</button>
+             <input type="hidden" name="stripeToken" id="ok">
+              <button class="btn btn-primary btn-checkout place-order-button" id="ok">PLACE ORDER</button>
             </div>
           </div>
         </div>
       </form>
     </section>
   </main>
+  @php
+    $categories = \App\Models\Category::all();
+@endphp
 @endsection
 @push('scripts')
+<!-- Assurez-vous d'inclure le SDK Stripe -->
 <script src="https://js.stripe.com/v3/"></script>
+
 <script>
-  // Fonction pour afficher ou masquer le bloc de paiement par carte
-  document.addEventListener('DOMContentLoaded', function() {
-    const modeRadios = document.getElementsByName('mode');
-    const stripeSection = document.getElementById('stripe-card-section');
+     document.addEventListener("DOMContentLoaded", function () {
+    const stripe = Stripe('pk_test_51RAILD4FblrsMg7lgsuvMMyNauZIlBmexBr5fkLgdXJ0jdoY7ZgSB5BENSaqVxMEUFUkJkAfSJGGft4HbPaj2zOc00c8fN9RwJ');
+    const elements = stripe.elements();
+    const card = elements.create('card');
+    card.mount('#card-element');
 
-    modeRadios.forEach(function(radio) {
-      radio.addEventListener('change', function() {
-        if (this.value === 'card') {
-          stripeSection.style.display = 'block';
-        } else {
-          stripeSection.style.display = 'none';
+    const inputToken = document.getElementById('ok');
+    const errorDiv = document.getElementById('card-errors');
+
+  
+
+    
+    async function handleTokenCreation() {
+        
+        try {
+            const {token, error} = await stripe.createToken(card); 
+           
+
+            if (error) {
+                
+                console.error("Erreur lors de la création du token:", error);
+                errorDiv.textContent = error.message;
+            } else {
+                inputToken.value = token.id; 
+               
+            }
+        } catch (e) {
+            console.error("Erreur lors de la création du token:", e);
         }
-      });
-    });
-  });
-
-  // Initialisation de Stripe Elements
-  const stripe = Stripe("{{ env('STRIPE_KEY') }}"); // Ta clé publique Stripe
-  const elements = stripe.elements();
-  const cardElement = elements.create('card');
-  cardElement.mount('#card-element');
-
-  // Gestion de la création du token lors de la soumission du formulaire
-  const checkoutForm = document.forms['checkout-form'];
-  checkoutForm.addEventListener('submit', async function(e) {
-    // Si l'utilisateur a sélectionné 'card', générer le token Stripe
-    if(document.querySelector('input[name="mode"]:checked').value === 'card') {
-      e.preventDefault();
-      const { token, error } = await stripe.createToken(cardElement);
-      if (error) {
-        document.getElementById('card-errors').textContent = error.message;
-      } else {
-        // Injecter le token dans le formulaire et soumettre
-        document.getElementById('stripeToken').value = token.id;
-        checkoutForm.submit();
-      }
     }
-  });
+
+   
+    handleTokenCreation();
+});
+
 </script>
+
 
 @endpush

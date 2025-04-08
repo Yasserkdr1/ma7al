@@ -152,12 +152,12 @@
                     <table class="table table-striped table-bordered">
                         <thead>
                             <tr>
-                                <th style="width:70px">OrderNo</th>
-                                <th class="text-center">Name</th>
-                                <th class="text-center">Phone</th>
-                                <th class="text-center">Subtotal</th>
+                                <th style="width:70px !important">OrderNo</th>
+                                <th class="text-center" style="width:140px !important">Name</th>
+                                <th class="text-center" style="width:200px !important">Phone</th>
+                                <th class="text-center" style="width:120px !important">Subtotal</th>
                                 <th class="text-center">Tax</th>
-                                <th class="text-center">Total</th>
+                                <th class="text-center"style="width:120px !important">Total</th>
 
                                 <th class="text-center">Status</th>
                                 <th class="text-center">Order Date</th>

@@ -39,11 +39,11 @@
                         <thead>
                             <tr>
                                 <th style="width:70px">OrderNo</th>
-                                <th class="text-center">Name</th>
-                                <th class="text-center" style="width:150px">Phone</th>
-                                <th class="text-center">Subtotal</th>
+                                <th class="text-center "style="width:140px !important">Name</th>
+                                <th class="text-center" style="width:200px !important" >Phone</th>
+                                <th class="text-center" style="width:140px !important">Subtotal</th>
                                 <th class="text-center">Tax</th>
-                                <th class="text-center">Total</th>
+                                <th class="text-center" style="width:140px !important">Total</th>
 
                                 <th class="text-center">Status</th>
                                 <th class="text-center">Order Date</th>

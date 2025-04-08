@@ -11,6 +11,8 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Laravel\Facades\Image;
 use Illuminate\Support\Facades\DB;
+use App\Models\OrderItem;
+use App\Models\Transaction;
 
 
 class AdminController extends Controller
@@ -269,6 +271,17 @@ FROM Orders
         $product->save();
         return redirect()->route('admin.products')->with('status','Products edited successfully');
      }
+
+
+     public function search(Request $request){
+
+        $query=$request->input('query');
+        $results=Product::where('name','LIKE',"%{$query}%")->get()->take(8);
+        return response()->json($results);
+
+     }
+
+     
 
 
 

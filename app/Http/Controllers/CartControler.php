@@ -81,14 +81,15 @@ class CartControler extends Controller
     }
 
     public function place_order(Request $request)
-    {
+
+    { 
         $user_id = Auth::user()->id;
         $address = Address::where('user_id', $user_id)->where('isdefault', true)->first();
-    
+
         if (!$address) {
             $request->validate([
                 'name' => 'required|max:100',
-                'phone' => 'required|numeric|digits:15',
+                'phone' => 'required|numeric|digits:10',
                 'zip' => 'required|numeric|digits:6',
                 'state' => 'required',
                 'city' => 'required',
@@ -110,9 +111,9 @@ class CartControler extends Controller
             $address->isdefault = true;
             $address->save();
         }
-    
+
         $this->setAmountforCheckout();
-    
+
         $order = new Order();
         $order->user_id = $user_id;
         $order->Subtotal = Session::get('checkout')['Subtotal'];
@@ -130,9 +131,9 @@ class CartControler extends Controller
         $order->country = $address->country;
         $order->type = 'home';
         $order->status = 'ordered';
-    
+
         $order->save();
-    
+
         foreach (Cart::instance('cart')->content() as $item) {
             $orderItem = new OrderItem();
             $orderItem->product_id = $item->id;
@@ -141,40 +142,49 @@ class CartControler extends Controller
             $orderItem->price = $item->price;
             $orderItem->save();
         }
-    
-        // Utiliser $request->mode pour toutes les vérifications
-        if($request->mode == 'card'){
-            \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
-    
-            try {
-                $charge = \Stripe\Charge::create([
-                    'amount' => Session::get('checkout')['total'] * 100, // en centimes
-                    'currency' => 'mad', // changer selon la devise choisie
-                    'description' => 'Order ID: ' . $order->id,
-                    'source' => $request->stripeToken,
-                    'metadata' => [
-                        'order_id' => $order->id,
-                        'user_id' => $user_id,
-                    ],
-                ]);
-    
-                // Sauvegarde de la transaction en cas de succès
-                $transaction = new Transaction();
-                $transaction->user_id = $user_id;
-                $transaction->order_id = $order->id;
-                $transaction->mode = 'card';
-                $transaction->status = 'approved';
-                $transaction->transaction_id = $charge->id;
-                $transaction->save();
-    
-            } catch (\Exception $e) {
-                // Gestion de l'erreur : suppression de la commande et retour avec erreur
-                $order->delete();
-                return redirect()->back()->withErrors(['msg' => 'Paiement échoué: ' . $e->getMessage()]);
+
+
+        if ($request->mode == 'card') {
+            
+            if (!$request->stripeToken) {
+                
+                return redirect()->back()->with('error', 'Les informations de paiement sont manquantes');
             }
-        } elseif($request->mode == 'paypal'){
-            // Intégrer Paypal ici
-        } elseif($request->mode == 'cod'){
+
+
+            
+            \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+
+            
+            $amount = (int)(Session::get('checkout')['total'] * 100);
+
+            
+            $charge = \Stripe\Charge::create([
+                'amount' => $amount,
+                'currency' => 'usd', 
+                'description' => 'Commande #' . $order->id,
+                'source' => $request->stripeToken,
+                'metadata' => [
+                    'order_id' => $order->id,
+                    'customer_email' => Auth::user()->email
+                ]
+            ]);
+            dd($charge);
+            // Enregistrer la transaction
+            $transaction = new Transaction();
+            $transaction->user_id = $user_id;
+            $transaction->order_id = $order->id;
+            $transaction->mode = 'card';
+            $transaction->status = 'approved';
+            $transaction->save();
+            Cart::instance('cart')->destroy();
+            Session::forget('checkout');
+            Session::put('order_id', $order->id);
+            
+
+            return redirect()->route('cart.order.confirmation');
+        } elseif ($request->mode == 'paypal') {
+        } elseif ($request->mode == 'cod') {
             $transaction = new Transaction();
             $transaction->user_id = $user_id;
             $transaction->order_id = $order->id;
@@ -182,11 +192,11 @@ class CartControler extends Controller
             $transaction->status = 'pending';
             $transaction->save();
         }
-    
+
         Cart::instance('cart')->destroy();
         Session::forget('checkout');
         Session::put('order_id', $order->id);
-    
+
         return redirect()->route('cart.order.confirmation');
     }
     
@@ -208,7 +218,7 @@ class CartControler extends Controller
             ]);
         }
     }
-
+   
 
     public function order_confirmation()
     {
